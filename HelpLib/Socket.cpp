@@ -7,7 +7,10 @@ Socket::Socket()
 	InitializeWindowsSockets();
 }
 
-Socket::~Socket() { }
+Socket::~Socket() 
+{ 
+	delete instance;
+}
 
 bool Socket::InitializeWindowsSockets()
 {
