@@ -15,7 +15,7 @@ public:
 		int timestamp, PointStatus status, RTU *rtuDevice, double eguSetpoint, int setPointTimestamp);
 
 	void SetEguSetpoint(double value);
-	void SetSetPointTimestamp(double value);
+	void SetSetPointTimestamp(int value);
 
 	double GetEguSetPoint();
 	int GetSetPointTimestamp();
