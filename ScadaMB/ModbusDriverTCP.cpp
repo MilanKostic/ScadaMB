@@ -9,8 +9,8 @@ ModbusMessageTCP ModbusDriverTCP::SendModbusMessage(SOCKET socket, ModbusMessage
 
 ModbusMessageTCP ModbusDriverTCP::Receive(SOCKET socket)
 {
-	/*char accessBuffer[1024];
-	while (1) {
+	char accessBuffer[1024];
+	/*while (1) {
 
 		int iResultSelect = Socket::Instance()->Select(socket, 0);
 		if (iResultSelect == SOCKET_ERROR)
