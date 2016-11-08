@@ -1,16 +1,24 @@
 #include "ModbusDriverTCP.h"
 
+ModbusMessageTCP ModbusDriverTCP::ProcessAccessBuffer(char* buffer, int length)
+{
+	return ModbusMessageTCP();
+}
+
 ModbusMessageTCP ModbusDriverTCP::SendModbusMessage(SOCKET socket, ModbusMessageTCP modbusMessage)
 {
 	Socket::Instance()->Send(socket, modbusMessage.Serialize(), modbusMessage.GetMessageLength());
 	
-	return ModbusMessageTCP();
+	return this->Receive(socket);
 }
 
 ModbusMessageTCP ModbusDriverTCP::Receive(SOCKET socket)
 {
-	char accessBuffer[1024];
-	while (1) {
+	int index = 0;
+	int messageLength = 0;
+	int dataLengthCount = -1;
+
+	while (true) {
 
 		int iResultSelect = Socket::Instance()->Select(socket, 0);
 		if (iResultSelect == SOCKET_ERROR)
@@ -24,19 +32,23 @@ ModbusMessageTCP ModbusDriverTCP::Receive(SOCKET socket)
 			continue;
 		}
 
-		int iResult = recv(socket, accessBuffer, 1024, 0);
+		int iResult = recv(socket, &accessBuffer[index], accessBufferLength - index, 0);
+		
+		if (iResult == SOCKET_ERROR) break;
+		if (iResult == 0) break;
 
-		if (iResult == SOCKET_ERROR)
+		index += iResult;
+		if (index >= 6 && messageLength == 0)
 		{
-			break;
+			messageLength = *(unsigned short*)&accessBuffer[4] + 6;
+			dataLengthCount = messageLength - index;
 		}
+		else if(messageLength != 0)
+		{
+			dataLengthCount -= iResult;
+		}
+		if (dataLengthCount == 0) break;
 
-		if (iResult == 0)
-		{
-			break;
-		}
 	}
-	//ProcessAccessBuffer(accessBuffer, iResult, bufferInfo, buffers);
-	closesocket(socket);
-	return ModbusMessageTCP();
+	return this->ProcessAccessBuffer(accessBuffer, messageLength);
 }

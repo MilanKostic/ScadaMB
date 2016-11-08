@@ -89,7 +89,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\ra133-2012\Source\Repos\ScadaMB\HelpLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\ra110-2012\Desktop\Blok2\Git\HelpLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -149,11 +149,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ErrorMessage.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ModbusDriverTCP.cpp" />
     <ClCompile Include="ModbusMessageTCP.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ErrorMessage.h" />
     <ClInclude Include="ModbusDriverTCP.h" />
     <ClInclude Include="ModbusMessageTCP.h" />
   </ItemGroup>

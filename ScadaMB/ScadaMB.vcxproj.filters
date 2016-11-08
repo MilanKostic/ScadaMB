@@ -24,12 +24,18 @@
     <ClCompile Include="ModbusMessageTCP.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ErrorMessage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ModbusDriverTCP.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ModbusMessageTCP.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ErrorMessage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

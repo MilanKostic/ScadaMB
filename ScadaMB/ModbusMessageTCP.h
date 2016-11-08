@@ -11,6 +11,9 @@ enum ModbusMessageTypes
 	WRITE_SINGLE_REGISTER = 0x06
 };
 
+/*
+	Zaglavlje svake poruke
+*/
 #pragma pack(1)
 typedef struct {
 	unsigned short transactionIdentifier;
@@ -26,6 +29,11 @@ protected:
 	char functionCode;
 	int messageLength;
 public:
+	const unsigned short headerLength = 7;
+
+	ModbusMessageTCP();
+	ModbusMessageTCP(char* bytes);
 	virtual char* Serialize();
+	virtual void Deserialize(char* msg);
 	virtual int GetMessageLength();
 };
