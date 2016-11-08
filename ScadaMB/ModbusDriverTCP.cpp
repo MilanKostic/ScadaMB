@@ -9,7 +9,7 @@ ModbusMessageTCP ModbusDriverTCP::SendModbusMessage(SOCKET socket, ModbusMessage
 
 ModbusMessageTCP ModbusDriverTCP::Receive(SOCKET socket)
 {
-	/*char accessBuffer[1024];
+	char accessBuffer[1024];
 	while (1) {
 
 		int iResultSelect = Socket::Instance()->Select(socket, 0);
@@ -37,6 +37,6 @@ ModbusMessageTCP ModbusDriverTCP::Receive(SOCKET socket)
 		}
 	}
 	//ProcessAccessBuffer(accessBuffer, iResult, bufferInfo, buffers);
-	closesocket(socket);*/
+	closesocket(socket);
 	return ModbusMessageTCP();
 }
