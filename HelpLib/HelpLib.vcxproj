@@ -130,9 +130,17 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AnalogInput.h" />
+    <ClInclude Include="AnalogOutput.h" />
+    <ClInclude Include="DigitalDevice.h" />
+    <ClInclude Include="RTU.h" />
     <ClInclude Include="Socket.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AnalogInput.cpp" />
+    <ClCompile Include="AnalogOutput.cpp" />
+    <ClCompile Include="DigitalDevice.cpp" />
+    <ClCompile Include="RTU.cpp" />
     <ClCompile Include="Socket.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
