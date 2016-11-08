@@ -153,11 +153,23 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ModbusDriverTCP.cpp" />
     <ClCompile Include="ModbusMessageTCP.cpp" />
+    <ClCompile Include="ReadCoilsMessage.cpp" />
+    <ClCompile Include="ReadDescreteInputsMessage.cpp" />
+    <ClCompile Include="ReadHoldingRegistersMessage.cpp" />
+    <ClCompile Include="ReadInputRegistersMessage.cpp" />
+    <ClCompile Include="WriteSingleCoilMessage.cpp" />
+    <ClCompile Include="WriteSingleRegisterMessage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ErrorMessage.h" />
     <ClInclude Include="ModbusDriverTCP.h" />
     <ClInclude Include="ModbusMessageTCP.h" />
+    <ClInclude Include="ReadCoilsMessage.h" />
+    <ClInclude Include="ReadDescreteInputsMessage.h" />
+    <ClInclude Include="ReadHoldingRegistersMessage.h" />
+    <ClInclude Include="ReadInputRegistersMessage.h" />
+    <ClInclude Include="WriteSingleCoilMessage.h" />
+    <ClInclude Include="WriteSingleRegisterMessage.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HelpLib\HelpLib.vcxproj">

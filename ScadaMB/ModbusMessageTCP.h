@@ -1,6 +1,5 @@
 #pragma once
 
-
 enum ModbusMessageTypes
 {
 	READ_COILS = 0x01,
@@ -27,6 +26,7 @@ class ModbusMessageTCP
 protected:
 	Header header;
 	char functionCode;
+	
 	int messageLength;
 public:
 	const unsigned short headerLength = 7;
@@ -36,4 +36,5 @@ public:
 	virtual char* Serialize();
 	virtual void Deserialize(char* msg);
 	virtual int GetMessageLength();
+	void SetFunctionCode(ModbusMessageTypes code);
 };

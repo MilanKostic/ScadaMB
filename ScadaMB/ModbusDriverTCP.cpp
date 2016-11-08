@@ -1,18 +1,28 @@
 #include "ModbusDriverTCP.h"
+#include "ReadCoilsMessage.h"
+#include "ReadDescreteInputsMessage.h"
 
-ModbusMessageTCP ModbusDriverTCP::ProcessAccessBuffer(char* buffer, int length)
+ModbusMessageTCP* ModbusDriverTCP::ProcessAccessBuffer(char* buffer)
 {
-	return ModbusMessageTCP();
+	switch (buffer[7])
+	{
+		case ModbusMessageTypes::READ_COILS:
+			return (ModbusMessageTCP*)new ReadCoilsMessage(buffer);
+		case ModbusMessageTypes::READ_DESCRETE_INPUTS:
+			return (ModbusMessageTCP*)new ReadDescreteInputsMessage(buffer);
+	}
+
+	return new ModbusMessageTCP();
 }
 
-ModbusMessageTCP ModbusDriverTCP::SendModbusMessage(SOCKET socket, ModbusMessageTCP modbusMessage)
+ModbusMessageTCP* ModbusDriverTCP::SendModbusMessage(SOCKET socket, ModbusMessageTCP modbusMessage)
 {
 	Socket::Instance()->Send(socket, modbusMessage.Serialize(), modbusMessage.GetMessageLength());
 	
 	return this->Receive(socket);
 }
 
-ModbusMessageTCP ModbusDriverTCP::Receive(SOCKET socket)
+ModbusMessageTCP* ModbusDriverTCP::Receive(SOCKET socket)
 {
 	int index = 0;
 	int messageLength = 0;
@@ -50,5 +60,5 @@ ModbusMessageTCP ModbusDriverTCP::Receive(SOCKET socket)
 		if (dataLengthCount == 0) break;
 
 	}
-	return this->ProcessAccessBuffer(accessBuffer, messageLength);
+	return this->ProcessAccessBuffer(accessBuffer);
 }
