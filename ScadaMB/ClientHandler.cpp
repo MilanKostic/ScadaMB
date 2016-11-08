@@ -1,5 +1,17 @@
 #include "ClientHandler.h"
 
+
+void ReceiveFunction(SOCKET socket) {
+	ClientHandler::Instance()->Receive(socket);
+}
+
+
+
+
+
+
+
+
 ClientHandler* ClientHandler::instance = NULL;
 
 ClientHandler::ClientHandler() {
@@ -129,10 +141,6 @@ void ClientHandler::ServerThread(char * port)
 	closesocket(listenSocket);
 }
 
-void ReceiveFunction(SOCKET socket) {
-	ClientHandler::Instance()->Receive(socket);
-}
-
 void ClientHandler::Receive(SOCKET socket) {
 	char accessBuffer[1024];
 
@@ -162,7 +170,16 @@ void ClientHandler::Receive(SOCKET socket) {
 			break; // Zatvorena konekcija
 		}
 
-		//CommandingEngine.Instance()->SerializeCommand()
+		/*
+		if(accessBuffer[0]==1)
+		{
+			char* retVal = RTDB::Instance()->GetCurrentValues();
+			Socket::Instance()->Send(socket, retVal, length);
+		}
+		else
+			CommandingEngine.Instance()->SerializeCommand()
+
+		*/
 	}
 
 	closesocket(socket);
