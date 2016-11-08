@@ -68,7 +68,7 @@ SOCKET Socket::Connect(char* ipAddress, int port)
 
 	if (connectSocket == INVALID_SOCKET)
 	{
-		cout << "socket failed with error: " << WSAGetLastError() << endl;
+		std::cout << "socket failed with error: " << WSAGetLastError() << std::endl;
 		WSACleanup();
 		return connectSocket;
 	}
@@ -134,3 +134,4 @@ bool Socket::Send(SOCKET socket, char* data, int length)
 		}
 	}
 }
+

@@ -14,7 +14,7 @@ void AnalogOutput::SetEguSetpoint(double value)
 	eguSetpoint = value;
 }
 
-void AnalogOutput::SetSetPointTimestamp(double value)
+void AnalogOutput::SetSetPointTimestamp(int value)
 {
 	setPointTimestamp = value;
 }
