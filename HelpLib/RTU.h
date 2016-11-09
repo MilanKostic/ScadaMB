@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <string>
+#include <list>
 
 enum PointStatus {
 	OnScan = 0,
@@ -10,8 +11,6 @@ enum PointStatus {
 	Commanding
 };
 
-using namespace std;
-
 class RTU {
 private:
 	int id;
@@ -19,6 +18,10 @@ private:
 	string transportProtocol;
 	string ipAddress;
 	int port;
+
+	//list<AnalogInput> analogInputList; 
+	//list<AnalogOutput> analogOutputList;
+	//list<DigitalDevice> digitalDevices;
 
 public:
 	RTU(int id, string industrialProtocol, string transportProtocol, string ipAddress, int port);
@@ -31,4 +34,8 @@ public:
 	string GetTrasportProtocol();
 	string GetIpAddress();
 	int GetPort();
+
+	//list<AnalogInput> GetAnalogInputList();
+	//list<AnalogOutput> GetAnalogOutoputList();
+	//list<DigitalDevice> GetDigitalDevices();
 };

@@ -7,11 +7,6 @@ void ReceiveFunction(SOCKET socket) {
 
 
 
-
-
-
-
-
 ClientHandler* ClientHandler::instance = NULL;
 
 ClientHandler::ClientHandler() {
@@ -137,12 +132,13 @@ void ClientHandler::ServerThread(char * port)
 
 		std::thread t1(ReceiveFunction, acceptedSocket);
 		// da li ovdje raditi smijestanje u listu tredova
+		t1.join();
 	}
 	closesocket(listenSocket);
 }
 
 void ClientHandler::Receive(SOCKET socket) {
-	char accessBuffer[1024];
+	char accessBuffer[6];
 
 	while (true)
 	{
@@ -169,19 +165,18 @@ void ClientHandler::Receive(SOCKET socket) {
 			printf("Connection is closed\n");
 			break; // Zatvorena konekcija
 		}
-
-		/*
-		if(accessBuffer[0]==1)
+		
+		if (accessBuffer[0] == 'r')
 		{
 			char* retVal = RTDB::Instance()->GetCurrentValues();
-			Socket::Instance()->Send(socket, retVal, length);
+			Socket::Instance()->Send(socket, retVal, strlen(retVal));
 		}
 		else
-			CommandingEngine.Instance()->SerializeCommand()
-
-		*/
+		{
+			CommandingEngine::Instance()->CreateCommand(accessBuffer);
+		}
 	}
-
+	
 	closesocket(socket);
 }
 

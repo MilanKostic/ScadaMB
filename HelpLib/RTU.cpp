@@ -7,12 +7,24 @@ RTU::RTU(int id, string industrialProtocol, string transportProtocol, string ipA
 	RTU::transportProtocol = transportProtocol;
 	RTU::ipAddress = ipAddress;
 	RTU::port = port;
+
 }
 
-/*RTU::RTU()
-{
-}*/
+/*
+list<AnalogInput> RTU::GetAnalogInputList() {
+	return analogInputList;
+}
 
+list<AnalogOutput> RTU::GetAnalogOutoputList()
+{
+	return analogOutputList;
+}
+
+list<DigitalDevice> RTU::GetDigitalDevices()
+{
+	return digitalDevices;
+}
+*/
 void RTU::SetIndustrialProtocol(string protocol)
 {
 	RTU::industrialProtocol = protocol;

@@ -2,6 +2,8 @@
 #include "ReadCoilsMessage.h"
 #include "ReadDescreteInputsMessage.h"
 
+ModbusDriverTCP* ModbusDriverTCP::instance = NULL;
+
 ModbusMessageTCP* ModbusDriverTCP::ProcessAccessBuffer(char* buffer)
 {
 	switch (buffer[7])
@@ -13,6 +15,14 @@ ModbusMessageTCP* ModbusDriverTCP::ProcessAccessBuffer(char* buffer)
 	}
 
 	return new ModbusMessageTCP();
+}
+
+ModbusDriverTCP * ModbusDriverTCP::Instance()
+{
+	if (instance == NULL) {
+		instance = new ModbusDriverTCP();
+	}
+	return instance;
 }
 
 ModbusMessageTCP* ModbusDriverTCP::SendModbusMessage(SOCKET socket, ModbusMessageTCP modbusMessage)

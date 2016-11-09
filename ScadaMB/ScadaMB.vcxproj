@@ -150,6 +150,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ClientHandler.cpp" />
+    <ClCompile Include="CommandingEngine.cpp" />
     <ClCompile Include="ErrorMessage.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ModbusDriverTCP.cpp" />
@@ -158,11 +159,13 @@
     <ClCompile Include="ReadDescreteInputsMessage.cpp" />
     <ClCompile Include="ReadHoldingRegistersMessage.cpp" />
     <ClCompile Include="ReadInputRegistersMessage.cpp" />
+    <ClCompile Include="RTDB.cpp" />
     <ClCompile Include="WriteSingleCoilMessage.cpp" />
     <ClCompile Include="WriteSingleRegisterMessage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ClientHandler.h" />
+    <ClInclude Include="CommandingEngine.h" />
     <ClInclude Include="ErrorMessage.h" />
     <ClInclude Include="ModbusDriverTCP.h" />
     <ClInclude Include="ModbusMessageTCP.h" />
@@ -170,6 +173,7 @@
     <ClInclude Include="ReadDescreteInputsMessage.h" />
     <ClInclude Include="ReadHoldingRegistersMessage.h" />
     <ClInclude Include="ReadInputRegistersMessage.h" />
+    <ClInclude Include="RTDB.h" />
     <ClInclude Include="WriteSingleCoilMessage.h" />
     <ClInclude Include="WriteSingleRegisterMessage.h" />
   </ItemGroup>
