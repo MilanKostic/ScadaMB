@@ -1,4 +1,5 @@
 #include "ModbusMessageTCP.h"
+#include "Socket.h"
 
 ModbusMessageTCP::ModbusMessageTCP() {}
 
@@ -14,9 +15,9 @@ char* ModbusMessageTCP::Serialize()
 
 void ModbusMessageTCP::Deserialize(char* msg)
 {
-	header.transactionIdentifier = *(unsigned short*)&msg[0];
-	header.protocolIdentifier = *(unsigned short*)&msg[2];
-	header.length = *(unsigned short*)&msg[4];
+	header.transactionIdentifier = ntohs(*(unsigned short*)&msg[0]);
+	header.protocolIdentifier = ntohs(*(unsigned short*)&msg[2]);
+	header.length = ntohs(*(unsigned short*)&msg[4]);
 	header.unitIdentifier = msg[6];
 }
 
@@ -28,4 +29,17 @@ int ModbusMessageTCP::GetMessageLength()
 void ModbusMessageTCP::SetFunctionCode(ModbusMessageTypes code)
 {
 	this->functionCode = code;
+}
+
+void ModbusMessageTCP::SetHeader(Header header)
+{
+	this->header.length = header.length;
+	this->header.protocolIdentifier = header.protocolIdentifier;
+	this->header.transactionIdentifier = header.transactionIdentifier;
+	this->header.unitIdentifier = header.unitIdentifier;
+}
+
+void ModbusMessageTCP::SetMessageLength(int msgLen)
+{
+	this->messageLength = msgLen;
 }

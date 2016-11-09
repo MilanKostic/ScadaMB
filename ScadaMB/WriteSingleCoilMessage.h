@@ -2,7 +2,7 @@
 
 #include "ModbusMessageTCP.h"
 
-class WriteSingleCoilMessage : ModbusMessageTCP
+class WriteSingleCoilMessage : public ModbusMessageTCP
 {
 
 };

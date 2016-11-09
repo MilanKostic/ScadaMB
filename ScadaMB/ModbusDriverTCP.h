@@ -7,13 +7,10 @@
 class ModbusDriverTCP
 {
 private:
-	static ModbusDriverTCP *instance;
 	static const unsigned short accessBufferLength = 1024;
 	char accessBuffer[accessBufferLength];
-	
-public:
 	ModbusMessageTCP* ProcessAccessBuffer(char* buffer);
-	static ModbusDriverTCP *Instance();
-	ModbusMessageTCP* SendModbusMessage(SOCKET socket, ModbusMessageTCP modbusMessage);
+public:
+	ModbusMessageTCP* SendModbusMessage(SOCKET socket, ModbusMessageTCP* modbusMessage);
 	ModbusMessageTCP* Receive(SOCKET socket);
 };

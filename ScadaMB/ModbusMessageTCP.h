@@ -37,4 +37,6 @@ public:
 	virtual void Deserialize(char* msg);
 	virtual int GetMessageLength();
 	void SetFunctionCode(ModbusMessageTypes code);
+	virtual void SetHeader(Header header);
+	void SetMessageLength(int msgLen);
 };
