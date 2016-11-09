@@ -11,6 +11,6 @@ private:
 	char accessBuffer[accessBufferLength];
 	ModbusMessageTCP* ProcessAccessBuffer(char* buffer);
 public:
-	ModbusMessageTCP* SendModbusMessage(SOCKET socket, ModbusMessageTCP modbusMessage);
+	ModbusMessageTCP* SendModbusMessage(SOCKET socket, ModbusMessageTCP* modbusMessage);
 	ModbusMessageTCP* Receive(SOCKET socket);
 };

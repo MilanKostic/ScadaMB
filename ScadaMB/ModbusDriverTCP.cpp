@@ -1,23 +1,29 @@
 #include "ModbusDriverTCP.h"
 #include "ReadCoilsMessage.h"
 #include "ReadDescreteInputsMessage.h"
+#include "ReadHoldingRegistersMessage.h"
+#include "ReadInputRegistersMessage.h"
 
 ModbusMessageTCP* ModbusDriverTCP::ProcessAccessBuffer(char* buffer)
 {
 	switch (buffer[7])
 	{
 		case ModbusMessageTypes::READ_COILS:
-			return (ModbusMessageTCP*)new ReadCoilsMessage(buffer);
+			return new ReadCoilsMessage(buffer);
 		case ModbusMessageTypes::READ_DESCRETE_INPUTS:
-			return (ModbusMessageTCP*)new ReadDescreteInputsMessage(buffer);
+			return new ReadDescreteInputsMessage(buffer);
+		case ModbusMessageTypes::READ_HOLDING_REGISTERS:
+			return new ReadHoldingRegistersMessage(buffer);
+		case ModbusMessageTypes::READ_INPUT_REGISTERS:
+			return new ReadInputRegistersMessage(buffer);
 	}
 
 	return new ModbusMessageTCP();
 }
 
-ModbusMessageTCP* ModbusDriverTCP::SendModbusMessage(SOCKET socket, ModbusMessageTCP modbusMessage)
+ModbusMessageTCP* ModbusDriverTCP::SendModbusMessage(SOCKET socket, ModbusMessageTCP* modbusMessage)
 {
-	Socket::Instance()->Send(socket, modbusMessage.Serialize(), modbusMessage.GetMessageLength());
+	bool success = Socket::Instance()->Send(socket, modbusMessage->Serialize(), modbusMessage->GetMessageLength());
 	
 	return this->Receive(socket);
 }
@@ -50,7 +56,7 @@ ModbusMessageTCP* ModbusDriverTCP::Receive(SOCKET socket)
 		index += iResult;
 		if (index >= 6 && messageLength == 0)
 		{
-			messageLength = *(unsigned short*)&accessBuffer[4] + 6;
+			messageLength = ntohs(*(unsigned short*)&accessBuffer[4]) + 6;
 			dataLengthCount = messageLength - index;
 		}
 		else if(messageLength != 0)
