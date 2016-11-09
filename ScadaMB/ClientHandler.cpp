@@ -1,5 +1,5 @@
 #include "ClientHandler.h"
-
+#include "RTDB.h"
 
 void ReceiveFunction(SOCKET socket) {
 	ClientHandler::Instance()->Receive(socket);
@@ -65,7 +65,7 @@ void ClientHandler::ServerThread(char * port)
 
 	// Setup the TCP listening socket - bind port number and local address 
 	// to socket
-	iResult = bind(listenSocket, resultingAddress->ai_addr, (int)resultingAddress->ai_addrlen);
+	iResult = ::bind(listenSocket, resultingAddress->ai_addr, (int)resultingAddress->ai_addrlen);
 	if (iResult == SOCKET_ERROR)
 	{
 		printf("bind failed with error: %d\n", WSAGetLastError());

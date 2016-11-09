@@ -3,6 +3,8 @@
 #include <string>
 #include <list>
 
+using namespace std;
+
 enum PointStatus {
 	OnScan = 0,
 	OffScan,
