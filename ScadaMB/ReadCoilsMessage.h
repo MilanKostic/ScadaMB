@@ -11,7 +11,7 @@ private:
 	unsigned short byteCount;
 	char* coilStatus;
 public:
-	ReadCoilsMessage(unsigned short length, unsigned short startingAddress, unsigned short numberOfCoils);
+	ReadCoilsMessage(unsigned short startingAddress, unsigned short numberOfCoils);
 	ReadCoilsMessage();
 	ReadCoilsMessage(char* bytes);
 	virtual char* Serialize();

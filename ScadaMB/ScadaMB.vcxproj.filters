@@ -13,6 +13,21 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\XmlParser">
+      <UniqueIdentifier>{6194f443-9ad1-4f0c-90e5-d47851eccc5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ModbusMessages">
+      <UniqueIdentifier>{b7b14348-ad77-455d-af4c-34ce77ef5df8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ModbusMessages">
+      <UniqueIdentifier>{5ad49ee5-6e27-46d8-87e4-89a6e30b98b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Config">
+      <UniqueIdentifier>{3fae9bfe-acd5-4a89-be9a-f5acb5d67aa1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Config">
+      <UniqueIdentifier>{41c9884a-87d3-445f-9030-d6d255d57f32}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -21,28 +36,7 @@
     <ClCompile Include="ModbusDriverTCP.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ModbusMessageTCP.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ErrorMessage.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ReadCoilsMessage.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ReadDescreteInputsMessage.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ReadHoldingRegistersMessage.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ReadInputRegistersMessage.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="WriteSingleCoilMessage.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="WriteSingleRegisterMessage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ClientHandler.cpp">
@@ -72,33 +66,33 @@
     <ClCompile Include="RTDB.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="WriteSingleRegisterMessage.cpp">
+      <Filter>Source Files\ModbusMessages</Filter>
+    </ClCompile>
+    <ClCompile Include="WriteSingleCoilMessage.cpp">
+      <Filter>Source Files\ModbusMessages</Filter>
+    </ClCompile>
+    <ClCompile Include="ReadInputRegistersMessage.cpp">
+      <Filter>Source Files\ModbusMessages</Filter>
+    </ClCompile>
+    <ClCompile Include="ReadHoldingRegistersMessage.cpp">
+      <Filter>Source Files\ModbusMessages</Filter>
+    </ClCompile>
+    <ClCompile Include="ReadDescreteInputsMessage.cpp">
+      <Filter>Source Files\ModbusMessages</Filter>
+    </ClCompile>
+    <ClCompile Include="ReadCoilsMessage.cpp">
+      <Filter>Source Files\ModbusMessages</Filter>
+    </ClCompile>
+    <ClCompile Include="ModbusMessageTCP.cpp">
+      <Filter>Source Files\ModbusMessages</Filter>
+    </ClCompile>
+    <ClCompile Include="ScadaConfig.cpp">
+      <Filter>Source Files\Config</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ModbusDriverTCP.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ModbusMessageTCP.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ErrorMessage.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ReadCoilsMessage.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ReadDescreteInputsMessage.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ReadHoldingRegistersMessage.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ReadInputRegistersMessage.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WriteSingleCoilMessage.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WriteSingleRegisterMessage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ClientHandler.h">
@@ -128,5 +122,59 @@
     <ClInclude Include="RTDB.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\XmlReader\rapidxml-1.13\rapidxml-1.13\rapidxml_utils.hpp">
+      <Filter>Source Files\XmlParser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\XmlReader\rapidxml-1.13\rapidxml-1.13\rapidxml.hpp">
+      <Filter>Source Files\XmlParser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\XmlReader\rapidxml-1.13\rapidxml-1.13\rapidxml_iterators.hpp">
+      <Filter>Source Files\XmlParser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\XmlReader\rapidxml-1.13\rapidxml-1.13\rapidxml_print.hpp">
+      <Filter>Source Files\XmlParser</Filter>
+    </ClInclude>
+    <ClInclude Include="ErrorMessage.h">
+      <Filter>Header Files\ModbusMessages</Filter>
+    </ClInclude>
+    <ClInclude Include="ReadCoilsMessage.h">
+      <Filter>Header Files\ModbusMessages</Filter>
+    </ClInclude>
+    <ClInclude Include="ReadDescreteInputsMessage.h">
+      <Filter>Header Files\ModbusMessages</Filter>
+    </ClInclude>
+    <ClInclude Include="ReadHoldingRegistersMessage.h">
+      <Filter>Header Files\ModbusMessages</Filter>
+    </ClInclude>
+    <ClInclude Include="ReadInputRegistersMessage.h">
+      <Filter>Header Files\ModbusMessages</Filter>
+    </ClInclude>
+    <ClInclude Include="WriteSingleCoilMessage.h">
+      <Filter>Header Files\ModbusMessages</Filter>
+    </ClInclude>
+    <ClInclude Include="WriteSingleRegisterMessage.h">
+      <Filter>Header Files\ModbusMessages</Filter>
+    </ClInclude>
+    <ClInclude Include="ModbusMessageTCP.h">
+      <Filter>Header Files\ModbusMessages</Filter>
+    </ClInclude>
+    <ClInclude Include="ScadaConfig.h">
+      <Filter>Header Files\Config</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\XmlReader\rapidxml-1.13\rapidxml-1.13\license.txt">
+      <Filter>Source Files\XmlParser</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\XmlReader\rapidxml-1.13\rapidxml-1.13\manual.html">
+      <Filter>Source Files\XmlParser</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="config.xml">
+      <Filter>Source Files\Config</Filter>
+    </Xml>
   </ItemGroup>
 </Project>

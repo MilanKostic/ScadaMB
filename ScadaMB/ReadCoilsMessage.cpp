@@ -2,16 +2,16 @@
 #include <string>
 #include "Socket.h"
 
-ReadCoilsMessage::ReadCoilsMessage(unsigned short length, unsigned short startingAddress, unsigned short numberOfCoils)
+ReadCoilsMessage::ReadCoilsMessage(unsigned short startingAddress, unsigned short numberOfCoils)
 {
 	this->functionCode = ModbusMessageTypes::READ_COILS;
 	this->header.transactionIdentifier = htons(0x0001);
 	this->header.protocolIdentifier = htons(0x0000);
-	this->header.length = htons(length);
+	this->header.length = htons(6);
 	this->header.unitIdentifier = 0x01;
 	this->startingAddress = startingAddress;
 	this->quantityOfCoils = numberOfCoils;
-	this->messageLength = this->headerLength + this->header.length - 1;
+	this->messageLength = this->headerLength + 5;
 }
 
 ReadCoilsMessage::ReadCoilsMessage()
