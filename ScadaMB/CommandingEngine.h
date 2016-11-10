@@ -3,6 +3,11 @@
 #include <iostream>
 #include "ModbusDriverTCP.h"
 #include "WriteSingleCoilMessage.h"
+#include "WriteSingleRegisterMessage.h"
+#include "PointAddress.h"
+#include <map>
+#include "RTDB.h"
+#include <thread>
 
 class CommandingEngine {
 private:
@@ -14,5 +19,6 @@ public:
 	static CommandingEngine *Instance();
 	void CreateCommand(char *message);
 
-	void Increment100UnitPS();
+	void StartIncrement100UnitPS();
 };
+void IncrementForOneRTU(RTU *rtu);
