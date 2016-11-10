@@ -161,6 +161,9 @@
     <ClInclude Include="ScadaConfig.h">
       <Filter>Header Files\Config</Filter>
     </ClInclude>
+    <ClInclude Include="PointAddress.h">
+      <Filter>Header Files\Config</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\..\XmlReader\rapidxml-1.13\rapidxml-1.13\license.txt">

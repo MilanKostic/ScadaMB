@@ -1,5 +1,5 @@
 #pragma once
-
+#include "PointAddress.h"
 #include <iostream>
 #include "RTU.h"
 #include <list>

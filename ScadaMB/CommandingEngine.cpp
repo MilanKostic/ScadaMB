@@ -6,6 +6,11 @@ CommandingEngine::CommandingEngine()
 {
 }
 
+CommandingEngine::CommandingEngine(SOCKET socket)
+{
+	scadaSocket = socket;
+}
+
 CommandingEngine * CommandingEngine::Instance()
 {
 	if (instance == NULL) {
@@ -16,14 +21,10 @@ CommandingEngine * CommandingEngine::Instance()
 
 void CommandingEngine::CreateCommand(char * message)
 {
-	/*
-	ModbusMessageTCP msg;
 	switch(message[2]){
-		case:'1'
-		case:'2' msg = WriteHoldMessage...
+		case '1': { ModbusDriverTCP::Instance()->SendModbusMessage(scadaSocket,
+			new WriteSingleCoilMessage(NULL/*Adresa tamo nekog pina*/, *(int*)(message+2))); break; }
 	}
-	ModbusDriverTCP::Instace()->Send(msg...502)
-	*/
 }
 
 void CommandingEngine::Increment100UnitPS()

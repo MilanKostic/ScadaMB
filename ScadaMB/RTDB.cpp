@@ -13,18 +13,21 @@ RTDB * RTDB::Instance()
 char* RTDB::GetCurrentValues()
 {
 	string answer;
-	answer += "Start";
-	
+	answer += "Current values: \n";
 	for each (RTU rtu in listOfRemotes)
 	{
 		answer += "RTU " + to_string(rtu.GetID());
-		for each (AnalogOutput analogOut in rtu.GetAnalogOutoputList())
+		for each (pair<unsigned int,AnalogOutput> analogOut in rtu.GetAnalogOutoputList())
 		{
-			answer += "\t" + analogOut.GetName() + " " + to_string(analogOut.GetEgu()) + "\n";
+			answer += "\t" + analogOut.second.GetName() + " " + to_string(analogOut.second.GetEgu()) + "\n";
 		}
-		for each (DigitalDevice dev in rtu.GetDigitalDevices())
+		for each (pair<unsigned int, AnalogInput> analogIn in rtu.GetAnalogOutoputList())
 		{
-			answer += "\t" + dev.GetName() + " " + to_string(dev.GetPointState()) + "\n";
+			answer += "\t" + analogIn.second.GetName() + " " + to_string(analogIn.second.GetEgu()) + "\n";
+		}
+		for each (pair<unsigned int, DigitalDevice> dev in rtu.GetDigitalDevices())
+		{
+			answer += "\t" + dev.second.GetName() + " " + to_string(dev.second.GetPointState()) + "\n";
 		}
 	}
 	char * writable = new char[answer.size() + 1];
