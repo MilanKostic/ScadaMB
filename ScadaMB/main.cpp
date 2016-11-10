@@ -4,11 +4,12 @@
 #include "ModbusDriverTCP.h"
 #include "ReadHoldingRegistersMessage.h"
 #include "ReadInputRegistersMessage.h"
+#include "ClientHandler.h"
 
 int main()
 {
-	
-	SOCKET socket = Socket::Instance()->Connect("127.0.0.1", 502);
+	ClientHandler::Instance()->ServerThread("9000");
+	//SOCKET socket = Socket::Instance()->Connect("127.0.0.1", 502);
 
 	
 	/*Header h;
@@ -22,12 +23,13 @@ int main()
 	msg->setQuantityOfCoils(htons(0x0010));
 	msg->SetMessageLength(12);*/
 	
-	ReadCoilsMessage* msg = new ReadCoilsMessage(6, 1, 10);
+	/*ReadCoilsMessage* msg = new ReadCoilsMessage(6, 1, 10);
 	ReadCoilsMessage readCoilsMsg = *(ReadCoilsMessage*)ModbusDriverTCP().SendModbusMessage(socket, (ModbusMessageTCP*)msg);;
 
 	ReadInputRegistersMessage* msgHolding = new ReadInputRegistersMessage(6, 30018, 4);
 	ReadInputRegistersMessage response = *(ReadInputRegistersMessage*)ModbusDriverTCP().SendModbusMessage(socket, (ModbusMessageTCP*)msgHolding);
-
-	closesocket(socket);
+	*/
+	//closesocket(socket);
+	
 	return 0;
 }

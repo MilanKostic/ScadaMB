@@ -1,6 +1,6 @@
 #include "DigitalDevice.h"
 
-DigitalDevice::DigitalDevice(string name, bool readOnly, unsigned int inAddress[2], unsigned int outAddress[2], PointState state, PointStatus status, PointState command, RTU *rtu)
+DigitalDevice::DigitalDevice(string name, bool readOnly, unsigned int inAddress[2], unsigned int outAddress[2], PointState state, PointStatus status, PointState command/*, RTU *rtu*/)
 {
 	this->name = name;
 	this->isReadOnly = readOnly;
@@ -11,7 +11,7 @@ DigitalDevice::DigitalDevice(string name, bool readOnly, unsigned int inAddress[
 	this->state = state;
 	this->status = status;
 	this->command = command;
-	this->rtu = rtu;
+	//this->rtu = rtu;
 }
 
 
@@ -59,11 +59,11 @@ PointStatus DigitalDevice::GetPointStatus()
 {
 	return status;
 }
-
+/*
 RTU* DigitalDevice::GetRTU()
 {
 	return rtu;
-}
+}*/
 
 PointState DigitalDevice::GetCommand()
 {

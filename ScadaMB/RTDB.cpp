@@ -17,18 +17,18 @@ char* RTDB::GetCurrentValues()
 	
 	for each (RTU rtu in listOfRemotes)
 	{
-		//answer += "RTU " + rtu.GetID() + "\n";
-		answer.append("RTU ").append(to_string(rtu.GetID())).append("\n");
-		/*for each (AnalogOutput analogOut in rtu.GetAnalogOutoputList())
+		answer += "RTU " + to_string(rtu.GetID());
+		for each (AnalogOutput analogOut in rtu.GetAnalogOutoputList())
 		{
-			answer.append("\t").append(" rtu")
-				//.append(analogOut.GetName()).append(" ").append(analogOut.GetEgu()).append("\n");
+			answer += "\t" + analogOut.GetName() + " " + to_string(analogOut.GetEgu()) + "\n";
 		}
 		for each (DigitalDevice dev in rtu.GetDigitalDevices())
 		{
-			//answer += "\t" + dev.GetName() + " " + dev.GetPointState() + "\n";
-		}*/
+			answer += "\t" + dev.GetName() + " " + to_string(dev.GetPointState()) + "\n";
+		}
 	}
-	answer += '\0';
-	return (char*)answer.c_str();
+	char * writable = new char[answer.size() + 1];
+	copy(answer.begin(), answer.end(), writable);
+	writable[answer.size()] = '\0';
+	return writable;
 }

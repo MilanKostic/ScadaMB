@@ -10,7 +10,7 @@ RTU::RTU(int id, string industrialProtocol, string transportProtocol, string ipA
 
 }
 
-/*
+
 list<AnalogInput> RTU::GetAnalogInputList() {
 	return analogInputList;
 }
@@ -24,7 +24,7 @@ list<DigitalDevice> RTU::GetDigitalDevices()
 {
 	return digitalDevices;
 }
-*/
+
 void RTU::SetIndustrialProtocol(string protocol)
 {
 	RTU::industrialProtocol = protocol;

@@ -154,7 +154,7 @@ void ClientHandler::Receive(SOCKET socket) {
 			Sleep(20);
 			continue;
 		}
-		int iResult = recv(socket, accessBuffer, 1024, 0);
+		int iResult = recv(socket, accessBuffer, 6, 0);
 
 		if (iResult == SOCKET_ERROR) {
 			printf("Error in receive: %d", WSAGetLastError());

@@ -1,15 +1,9 @@
 #pragma once
 #include <iostream>
 #include <string>
-#include "RTU.h"
+//#include "RTU.h"
 
-enum PointState {
-	Off = 0,
-	On,
-	Progress,
-	Error
-};
-
+#include "PointStates.h"
 using namespace std;
 
 class DigitalDevice {
@@ -20,12 +14,12 @@ private:
 	unsigned int outAddress[2];
 	PointState state;
 	PointStatus status;
-	RTU* rtu;
+	//RTU* rtu;
 
 	PointState command;
 
 public:
-	DigitalDevice(string name, bool readOnly, unsigned int inAddress[2], unsigned int outAddress[2], PointState state, PointStatus status, PointState command, RTU* rtu);
+	DigitalDevice(string name, bool readOnly, unsigned int inAddress[2], unsigned int outAddress[2], PointState state, PointStatus status, PointState command/*, RTU* rtu*/);
 	
 	void SetCommand(PointState value);
 	void SetState(PointState value);
@@ -37,6 +31,6 @@ public:
 	unsigned int GetOutAddress();
 	PointState GetPointState();
 	PointStatus GetPointStatus();
-	RTU *GetRTU();
+//	RTU *GetRTU();
 	PointState GetCommand();
 };

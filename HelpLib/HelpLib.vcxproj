@@ -133,6 +133,7 @@
     <ClInclude Include="AnalogInput.h" />
     <ClInclude Include="AnalogOutput.h" />
     <ClInclude Include="DigitalDevice.h" />
+    <ClInclude Include="PointStates.h" />
     <ClInclude Include="RTU.h" />
     <ClInclude Include="Socket.h" />
   </ItemGroup>
