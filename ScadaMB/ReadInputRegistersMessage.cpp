@@ -1,7 +1,7 @@
 #include "ReadInputRegistersMessage.h"
 
-ReadInputRegistersMessage::ReadInputRegistersMessage(unsigned short length, unsigned short startingAddress, unsigned short quantityOfRegisters)
-	: ReadHoldingRegistersMessage(length, startingAddress, quantityOfRegisters)
+ReadInputRegistersMessage::ReadInputRegistersMessage(unsigned short startingAddress, unsigned short quantityOfRegisters)
+	: ReadHoldingRegistersMessage(startingAddress, quantityOfRegisters)
 {
 	this->functionCode = ModbusMessageTypes::READ_INPUT_REGISTERS;
 }

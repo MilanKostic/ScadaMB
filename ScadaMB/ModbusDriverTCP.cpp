@@ -3,6 +3,8 @@
 #include "ReadDescreteInputsMessage.h"
 #include "ReadHoldingRegistersMessage.h"
 #include "ReadInputRegistersMessage.h"
+#include "WriteSingleCoilMessage.h"
+#include "WriteSingleRegisterMessage.h"
 
 ModbusMessageTCP* ModbusDriverTCP::ProcessAccessBuffer(char* buffer)
 {
@@ -16,6 +18,10 @@ ModbusMessageTCP* ModbusDriverTCP::ProcessAccessBuffer(char* buffer)
 			return new ReadHoldingRegistersMessage(buffer);
 		case ModbusMessageTypes::READ_INPUT_REGISTERS:
 			return new ReadInputRegistersMessage(buffer);
+		case ModbusMessageTypes::WRITE_SINGLE_COIL:
+			return new WriteSingleCoilMessage(buffer);
+		case ModbusMessageTypes::WRITE_SINGLE_REGISTER:
+			return new WriteSingleRegisterMessage(buffer);
 	}
 
 	return new ModbusMessageTCP();

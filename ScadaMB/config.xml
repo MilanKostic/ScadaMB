@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scada_config>
+  <rtu ipAddress="127.0.0.1" port="502" id="1" industrialProtocol="modbus" transportProtocol="TCP">
+    
+   <analogInputs>
+      <analogInput name="i1" address="0x0001" eguMin="20.00" eguMax="100.00" timeStamp="1" rawMin="0" rawMax="65000" />
+    </analogInputs>
+
+    <analogOutputs>
+    </analogOutputs>
+
+    <digitalInputs>
+      <digitalInput name="d1" address=""/>
+    </digitalInputs>
+
+    <digitalOutputs>
+    </digitalOutputs>
+      
+  </rtu>
+</scada_config>

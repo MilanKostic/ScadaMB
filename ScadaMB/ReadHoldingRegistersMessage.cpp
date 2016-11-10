@@ -2,16 +2,16 @@
 #include <string>
 #include "Socket.h"
 
-ReadHoldingRegistersMessage::ReadHoldingRegistersMessage(unsigned short length, unsigned short startingAddress, unsigned short quantityOfRegisters)
+ReadHoldingRegistersMessage::ReadHoldingRegistersMessage(unsigned short startingAddress, unsigned short quantityOfRegisters)
 {
 	this->functionCode = ModbusMessageTypes::READ_HOLDING_REGISTERS;
 	this->header.transactionIdentifier = htons(0x0001);
 	this->header.protocolIdentifier = htons(0x0000);
-	this->header.length = htons(length);
+	this->header.length = htons(6);
 	this->header.unitIdentifier = 0x01;
 	this->startingAddress = startingAddress;
 	this->quantityOfRegisters = quantityOfRegisters;
-	this->messageLength = this->headerLength + this->header.length - 1;
+	this->messageLength = this->headerLength + 5;
 }
 
 ReadHoldingRegistersMessage::ReadHoldingRegistersMessage()
@@ -47,5 +47,9 @@ void ReadHoldingRegistersMessage::Deserialize(char * buffer)
 	memcpy(&this->byteCount, temp, 2);
 	this->registerValue = new unsigned short(this->byteCount / 2);
 	memcpy(this->registerValue, &buffer[headerLength + 2], sizeof(char) * this->byteCount);
+	for (int i = 0; i < this->byteCount / 2; i++)
+	{
+		this->registerValue[i] = ntohs(this->registerValue[i]);
+	}
 	this->messageLength = headerLength + this->header.length - 1;
 }

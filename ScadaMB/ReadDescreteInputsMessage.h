@@ -12,7 +12,7 @@ private:
 	char byteCount;
 	char* coilStatus;
 public:
-	ReadDescreteInputsMessage(unsigned short length, unsigned short startingAddress, unsigned short quantityOfInputs);
+	ReadDescreteInputsMessage(unsigned short startingAddress, unsigned short quantityOfInputs);
 	ReadDescreteInputsMessage();
 	ReadDescreteInputsMessage(char* bytes);
 };
