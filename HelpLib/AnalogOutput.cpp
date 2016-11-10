@@ -1,6 +1,6 @@
 #include "AnalogOutput.h"
 
-AnalogOutput::AnalogOutput(string name, string address, double eguMin,
+AnalogOutput::AnalogOutput(string name, unsigned short address, double eguMin,
 	double eguMax, double egu, double rawMin, double rawMax, double raw, int timestamp,
 	PointStatus status/*, RTU *rtuDevice*/, double eguSetpoint, int setPointTimestamp):
 	AnalogInput( name,  address,  eguMin,  eguMax,  egu,  rawMin,  rawMax,  raw,  timestamp,  status/*,  rtuDevice*/)

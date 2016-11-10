@@ -10,7 +10,7 @@ private:
 	double eguSetpoint;
 	int setPointTimestamp;
 public:
-	AnalogOutput(string name, string address, double eguMin, 
+	AnalogOutput(string name, unsigned short address, double eguMin, 
 		double eguMax, double egu, double rawMin, double rawMax, double raw, 
 		int timestamp, PointStatus status/*, RTU *rtuDevice*/, double eguSetpoint, int setPointTimestamp);
 

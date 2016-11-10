@@ -7,6 +7,7 @@
 #include "WriteSingleCoilMessage.h"
 #include "WriteSingleRegisterMessage.h"
 #include "ReadHoldingRegistersMessage.h"
+#include "ScadaConfig.h"
 
 int main()
 {
@@ -36,11 +37,16 @@ int main()
 	WriteSingleCoilMessage retWrite = *(WriteSingleCoilMessage*)ModbusDriverTCP().SendModbusMessage(socket, (ModbusMessageTCP*)testWrite);
 
 	WriteSingleRegisterMessage* testSingleReg = new WriteSingleRegisterMessage(40001, 25);
-	WriteSingleCoilMessage response = *(WriteSingleCoilMessage*)ModbusDriverTCP().SendModbusMessage(socket, (ModbusMessageTCP*)testSingleReg);*/
+	WriteSingleCoilMessage response = *(WriteSingleCoilMessage*)ModbusDriverTCP().SendModbusMessage(socket, (ModbusMessageTCP*)testSingleReg);
 
 	ReadHoldingRegistersMessage* readHolding = new ReadHoldingRegistersMessage(40001, 3);
 	ReadHoldingRegistersMessage resp = *(ReadHoldingRegistersMessage*)ModbusDriverTCP().SendModbusMessage(socket, readHolding);
+	*/
+
+	ScadaConfig().LoadScadaParams(NULL);
 
 	closesocket(socket);
+
+	system("pause");
 	return 0;
 }

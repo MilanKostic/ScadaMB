@@ -87,7 +87,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_SCL_SECURE_NO_WARNINGS;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>C:\Users\ra110-2012\Desktop\Blok2\Git\HelpLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
@@ -165,15 +165,15 @@
     <ClCompile Include="WriteSingleRegisterMessage.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\XmlReader\rapidxml-1.13\rapidxml-1.13\rapidxml.hpp" />
-    <ClInclude Include="..\..\XmlReader\rapidxml-1.13\rapidxml-1.13\rapidxml_iterators.hpp" />
-    <ClInclude Include="..\..\XmlReader\rapidxml-1.13\rapidxml-1.13\rapidxml_print.hpp" />
-    <ClInclude Include="..\..\XmlReader\rapidxml-1.13\rapidxml-1.13\rapidxml_utils.hpp" />
     <ClInclude Include="ClientHandler.h" />
     <ClInclude Include="CommandingEngine.h" />
     <ClInclude Include="ErrorMessage.h" />
     <ClInclude Include="ModbusDriverTCP.h" />
     <ClInclude Include="ModbusMessageTCP.h" />
+    <ClInclude Include="rapidhxml_iterators.hpp" />
+    <ClInclude Include="rapidxml.hpp" />
+    <ClInclude Include="rapidxml_print.hpp" />
+    <ClInclude Include="rapidxml_utils.hpp" />
     <ClInclude Include="ReadCoilsMessage.h" />
     <ClInclude Include="ReadDescreteInputsMessage.h" />
     <ClInclude Include="ReadHoldingRegistersMessage.h" />
@@ -187,12 +187,6 @@
     <ProjectReference Include="..\HelpLib\HelpLib.vcxproj">
       <Project>{30ac6c1c-2851-4ed6-af00-deb0519d46c0}</Project>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="..\..\XmlReader\rapidxml-1.13\rapidxml-1.13\license.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\XmlReader\rapidxml-1.13\rapidxml-1.13\manual.html" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="config.xml" />

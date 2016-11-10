@@ -1,7 +1,7 @@
 #include "AnalogInput.h"
 
 
-AnalogInput::AnalogInput(string name, string address, double eguMin, double eguMax, double egu, double rawMin, double rawMax, double raw, int timestamp, PointStatus status/*, RTU *rtuDevice*/)
+AnalogInput::AnalogInput(string name, unsigned short address, double eguMin, double eguMax, double egu, double rawMin, double rawMax, double raw, int timestamp, PointStatus status/*, RTU *rtuDevice*/)
 {
 	AnalogInput::name = name;
 	AnalogInput::address = address;
@@ -16,12 +16,23 @@ AnalogInput::AnalogInput(string name, string address, double eguMin, double eguM
 	//AnalogInput::rtu = rtu;
 }
 
+AnalogInput::AnalogInput(string name, unsigned short address, double eguMin, double eguMax, double rawMin, double rawMax, int timestamp)
+{
+	AnalogInput::name = name;
+	AnalogInput::address = address;
+	AnalogInput::eguMin = eguMin;
+	AnalogInput::eguMax = eguMax;
+	AnalogInput::rawMin = rawMin;
+	AnalogInput::rawMax = rawMax;
+	AnalogInput::timeStamp = timestamp;
+}
+
 string AnalogInput::GetName()
 {
 	return name;
 }
 
-string AnalogInput::GetAddress()
+unsigned short AnalogInput::GetAddress()
 {
 	return address;
 }

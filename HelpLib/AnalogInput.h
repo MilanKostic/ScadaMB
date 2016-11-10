@@ -10,7 +10,7 @@ using namespace std;
 class AnalogInput {
 private:
 	string name;
-	string address;
+	unsigned short address;
 
 	double eguMin;
 	double eguMax;
@@ -25,10 +25,11 @@ private:
 	PointStatus status;
 	//RTU *rtu;
 public:
-	AnalogInput(string name, string address, double eguMin, double eguMax, double egu, double rawMin, double rawMax, double raw, int timestamp, PointStatus status/*, RTU *rtuDevice*/);
-	
+	AnalogInput(string name, unsigned short address, double eguMin, double eguMax, double egu, double rawMin, double rawMax, double raw, int timestamp, PointStatus status/*, RTU *rtuDevice*/);
+	AnalogInput(string name, unsigned short address, double eguMin, double eguMax, double rawMin, double rawMax, int timestamp);
+
 	string GetName();
-	string GetAddress();
+	unsigned short GetAddress();
 
 	double GetEguMin();
 	double GetEguMax();

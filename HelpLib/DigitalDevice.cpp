@@ -40,12 +40,12 @@ bool DigitalDevice::IsReadOnly()
 	return isReadOnly;
 }
 
-unsigned int DigitalDevice::GetInAddress()
+unsigned short DigitalDevice::GetInAddress()
 {
 	return *inAddress;
 }
 
-unsigned int DigitalDevice::GetOutAddress()
+unsigned short DigitalDevice::GetOutAddress()
 {
 	return *outAddress;
 }

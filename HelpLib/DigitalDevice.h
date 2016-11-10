@@ -10,8 +10,8 @@ class DigitalDevice {
 private:
 	string name;
 	bool isReadOnly;
-	unsigned int inAddress[2];
-	unsigned int outAddress[2];
+	unsigned short inAddress[2];
+	unsigned short outAddress[2];
 	PointState state;
 	PointStatus status;
 	//RTU* rtu;
@@ -27,8 +27,8 @@ public:
 
 	string GetName();
 	bool IsReadOnly();
-	unsigned int GetInAddress();
-	unsigned int GetOutAddress();
+	unsigned short GetInAddress();
+	unsigned short GetOutAddress();
 	PointState GetPointState();
 	PointStatus GetPointStatus();
 //	RTU *GetRTU();
