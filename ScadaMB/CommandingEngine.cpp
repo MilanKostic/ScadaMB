@@ -6,6 +6,11 @@ CommandingEngine::CommandingEngine()
 {
 }
 
+CommandingEngine::CommandingEngine(SOCKET socket)
+{
+	scadaSocket = socket;
+}
+
 CommandingEngine * CommandingEngine::Instance()
 {
 	if (instance == NULL) {
@@ -16,32 +21,34 @@ CommandingEngine * CommandingEngine::Instance()
 
 void CommandingEngine::CreateCommand(char * message)
 {
-	/*
-	ModbusMessageTCP msg;
 	switch(message[2]){
-		case:'1'
-		case:'2' msg = WriteHoldMessage...
+		case '1': { ModbusDriverTCP::Instance()->SendModbusMessage(NULL /*Soket od RTU - a*/ ,
+			new WriteSingleCoilMessage(PointAddress::dozvolaPraznjenjaMjesalice, *(int*)(message+2))); break; }
 	}
-	ModbusDriverTCP::Instace()->Send(msg...502)
-	*/
 }
 
-void CommandingEngine::Increment100UnitPS()
+void CommandingEngine::StartIncrement100UnitPS()
 {
-	/*ovo ce se pozivati unutar posebne niti
-	while(1){
-		if(!RTDB::Intance()->VentilVode()){
-			ModbusMessageTCP msg;
-			ModbusDriverTCP::Instace()->Send(msg...502)
-		}
-		if(!RTDB::Intance()->VentilPijeska()){
-		ModbusMessageTCP msg;
-		ModbusDriverTCP::Instace()->Send(msg...502)
-		}
-		if(!RTDB::Intance()->VentilSljunka()){
-		ModbusMessageTCP msg;
-		ModbusDriverTCP::Instace()->Send(msg...502)
-		}
+	for each (pair<int, RTU*> rtu in RTDB::Instance()->GetRemotes())
+	{
+		std::thread t1(IncrementForOneRTU, rtu.second);
 	}
-	*/
+}
+
+void IncrementForOneRTU(RTU *rtu) {
+	while (true) {
+		if (rtu->GetDigitalDevices().find(PointAddress::ventilVode)->second.GetPointState() == PointState::On) {
+			ModbusDriverTCP::Instance()->SendModbusMessage(NULL/*Soket od RTU-a*/,
+				new WriteSingleRegisterMessage(PointAddress::kolicinaVodeOut, 100));
+		}
+		if (rtu->GetDigitalDevices().find(PointAddress::ventilPeska)->second.GetPointState() == PointState::On) {
+			ModbusDriverTCP::Instance()->SendModbusMessage(NULL/*Soket od RTU-a*/,
+				new WriteSingleRegisterMessage(PointAddress::kolicinaPijeskaOut, 100));
+		}
+		if (rtu->GetDigitalDevices().find(PointAddress::ventilSljunka)->second.GetPointState() == PointState::On) {
+			ModbusDriverTCP::Instance()->SendModbusMessage(NULL/*Soket od RTU-a*/,
+				new WriteSingleRegisterMessage(PointAddress::kolicinaSljunkaOut, 100));
+		}
+		Sleep(1000);
+	}
 }

@@ -7,12 +7,12 @@
 #include "WriteSingleCoilMessage.h"
 #include "WriteSingleRegisterMessage.h"
 #include "ReadHoldingRegistersMessage.h"
-#include "ScadaConfig.h"
+#include "ClientHandler.h"
 
 int main()
 {
-	
-	SOCKET socket = Socket::Instance()->Connect("127.0.0.1", 502);
+	ClientHandler::Instance()->ServerThread("9000");
+	//SOCKET socket = Socket::Instance()->Connect("127.0.0.1", 502);
 
 	
 	/*Header h;
@@ -37,16 +37,11 @@ int main()
 	WriteSingleCoilMessage retWrite = *(WriteSingleCoilMessage*)ModbusDriverTCP().SendModbusMessage(socket, (ModbusMessageTCP*)testWrite);
 
 	WriteSingleRegisterMessage* testSingleReg = new WriteSingleRegisterMessage(40001, 25);
-	WriteSingleCoilMessage response = *(WriteSingleCoilMessage*)ModbusDriverTCP().SendModbusMessage(socket, (ModbusMessageTCP*)testSingleReg);
+	WriteSingleCoilMessage response = *(WriteSingleCoilMessage*)ModbusDriverTCP().SendModbusMessage(socket, (ModbusMessageTCP*)testSingleReg);*/
 
-	ReadHoldingRegistersMessage* readHolding = new ReadHoldingRegistersMessage(40001, 3);
+	/*ReadHoldingRegistersMessage* readHolding = new ReadHoldingRegistersMessage(40001, 3);
 	ReadHoldingRegistersMessage resp = *(ReadHoldingRegistersMessage*)ModbusDriverTCP().SendModbusMessage(socket, readHolding);
-	*/
-
-	ScadaConfig().LoadScadaParams(NULL);
 
 	closesocket(socket);
-
-	system("pause");
-	return 0;
+	return 0;*/
 }

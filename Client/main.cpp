@@ -61,6 +61,7 @@ void ShowMonitoringValues(SOCKET serverSocket, char* sendBuffer) {
 			char *writeBuffer = new char(iResult);
 			memcpy(writeBuffer, accessBuffer, iResult);
 			cout << writeBuffer;
+			break;
 		}
 		else {
 			cout << accessBuffer;
@@ -75,12 +76,7 @@ void  ServeCommandMenu(SOCKET serverSocket, char* sendBuffer) {
 	char menuValue;
 	int value;
 	do {
-		cout << "1. Kolicina vode\n";
-		cout << "2. Kolicina pijeska\n";
-		cout << "3. Kolicina sljunka\n";
-		cout << "4. Mjesalica puna/nije puna (1/0)\n";
-		cout << "5. Kamion prisutan/nije prisutan (1/0)\n";
-		cout << "6. Mjesalica se prazni/ne prazni se (1/0)\n";
+		cout << "1. Dozvola praznjenja mjesalice (1/0)\n";
 		cout << "0. Izlaz\n";
 		cin >> menuValue;
 

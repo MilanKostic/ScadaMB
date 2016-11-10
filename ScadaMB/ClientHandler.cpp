@@ -169,7 +169,7 @@ void ClientHandler::Receive(SOCKET socket) {
 		if (accessBuffer[0] == 'r')
 		{
 			char* retVal = RTDB::Instance()->GetCurrentValues();
-			Socket::Instance()->Send(socket, retVal, strlen(retVal));
+			Socket::Instance()->Send(socket, retVal, strlen(retVal)+1);
 		}
 		else
 		{

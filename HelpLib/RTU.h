@@ -5,6 +5,8 @@
 //#include "AnalogInput.h"
 #include "AnalogOutput.h"
 #include "DigitalDevice.h"
+#include <map>
+
 using namespace std;
 
 class RTU {
@@ -15,9 +17,9 @@ private:
 	string ipAddress;
 	int port;
 
-	list<AnalogInput> analogInputList; 
-	list<AnalogOutput> analogOutputList;
-	list<DigitalDevice> digitalDevices;
+	map<unsigned short, AnalogInput> analogInputList;
+	map<unsigned short, AnalogOutput> analogOutputList;
+	map<unsigned short, DigitalDevice> digitalDevices;
 
 public:
 	RTU(int id, string industrialProtocol, string transportProtocol, string ipAddress, int port);
@@ -31,7 +33,7 @@ public:
 	string GetIpAddress();
 	int GetPort();
 
-	list<AnalogInput> GetAnalogInputList();
-	list<AnalogOutput> GetAnalogOutoputList();
-	list<DigitalDevice> GetDigitalDevices();
+	map<unsigned short, AnalogInput> GetAnalogInputList();
+	map<unsigned short, AnalogOutput> GetAnalogOutoputList();
+	map<unsigned short, DigitalDevice> GetDigitalDevices();
 };
