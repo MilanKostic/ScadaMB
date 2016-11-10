@@ -190,12 +190,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\..\XmlReader\rapidxml-1.13\rapidxml-1.13\license.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\XmlReader\rapidxml-1.13\rapidxml-1.13\manual.html" />
-  </ItemGroup>
-  <ItemGroup>
     <Xml Include="config.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
