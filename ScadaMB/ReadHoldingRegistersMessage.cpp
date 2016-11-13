@@ -45,7 +45,7 @@ void ReadHoldingRegistersMessage::Deserialize(char * buffer)
 	temp[0] = buffer[headerLength + 1];
 	temp[1] = 0;
 	memcpy(&this->byteCount, temp, 2);
-	this->registerValue = new unsigned short(this->byteCount / 2);
+	this->registerValue = new unsigned short[this->byteCount / 2];
 	memcpy(this->registerValue, &buffer[headerLength + 2], sizeof(char) * this->byteCount);
 	for (int i = 0; i < this->byteCount / 2; i++)
 	{
