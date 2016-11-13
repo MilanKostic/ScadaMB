@@ -89,7 +89,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\ra133-2012\Source\Repos\ScadaMB\HelpLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Fakultet\Master\Blok2\Projekat\ScadaMB\HelpLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -151,10 +151,12 @@
   <ItemGroup>
     <ClCompile Include="ClientHandler.cpp" />
     <ClCompile Include="CommandingEngine.cpp" />
+    <ClCompile Include="DataProcessingEngine.cpp" />
     <ClCompile Include="ErrorMessage.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ModbusDriverTCP.cpp" />
     <ClCompile Include="ModbusMessageTCP.cpp" />
+    <ClCompile Include="PollEngine.cpp" />
     <ClCompile Include="ReadCoilsMessage.cpp" />
     <ClCompile Include="ReadDescreteInputsMessage.cpp" />
     <ClCompile Include="ReadHoldingRegistersMessage.cpp" />
@@ -171,10 +173,13 @@
     <ClInclude Include="..\..\XmlReader\rapidxml-1.13\rapidxml-1.13\rapidxml_utils.hpp" />
     <ClInclude Include="ClientHandler.h" />
     <ClInclude Include="CommandingEngine.h" />
+    <ClInclude Include="DataProcessingEngine.h" />
     <ClInclude Include="ErrorMessage.h" />
+    <ClInclude Include="HostPoll.h" />
     <ClInclude Include="ModbusDriverTCP.h" />
     <ClInclude Include="ModbusMessageTCP.h" />
     <ClInclude Include="PointAddress.h" />
+    <ClInclude Include="PollEngine.h" />
     <ClInclude Include="ReadCoilsMessage.h" />
     <ClInclude Include="ReadDescreteInputsMessage.h" />
     <ClInclude Include="ReadHoldingRegistersMessage.h" />
@@ -190,7 +195,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Xml Include="config.xml" />
+    <Xml Include="config.xml">
+      <SubType>Designer</SubType>
+    </Xml>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

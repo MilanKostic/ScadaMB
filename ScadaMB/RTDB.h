@@ -13,4 +13,5 @@ public:
 	char *GetCurrentValues();
 	map<int, RTU*> GetRemotes();
 	map<int, RTU*> AddRTU(RTU *device);
+	RTU* GetRTU(int id);
 };

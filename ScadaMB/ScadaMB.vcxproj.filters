@@ -28,12 +28,27 @@
     <Filter Include="Header Files\XmlParser">
       <UniqueIdentifier>{6194f443-9ad1-4f0c-90e5-d47851eccc5c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\DataProcessingEngine">
+      <UniqueIdentifier>{51572eb3-489d-4e71-a204-e22579226365}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\DataProcessingEngine">
+      <UniqueIdentifier>{8cee4111-ed6a-4a25-b6bb-129aeb14fff6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\PollEngine">
+      <UniqueIdentifier>{098efa5c-373e-465c-9fdc-2486ebf7ea49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\PollEngine">
+      <UniqueIdentifier>{52509de3-e01d-43fa-8a8e-59164a1b1604}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ModbusDriverTCP">
+      <UniqueIdentifier>{8ab30f3e-d232-491e-a547-02eb2019f107}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ModbusDriverTCP">
+      <UniqueIdentifier>{baffa932-7eae-43d4-a147-e83ef1a4d94e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ModbusDriverTCP.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ClientHandler.cpp">
@@ -90,11 +105,17 @@
     <ClCompile Include="ErrorMessage.cpp">
       <Filter>Source Files\ModbusMessages</Filter>
     </ClCompile>
+    <ClCompile Include="DataProcessingEngine.cpp">
+      <Filter>Source Files\DataProcessingEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="PollEngine.cpp">
+      <Filter>Source Files\PollEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="ModbusDriverTCP.cpp">
+      <Filter>Source Files\ModbusDriverTCP</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ModbusDriverTCP.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ClientHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -163,6 +184,18 @@
     </ClInclude>
     <ClInclude Include="..\..\XmlReader\rapidxml-1.13\rapidxml-1.13\rapidxml_print.hpp">
       <Filter>Header Files\XmlParser</Filter>
+    </ClInclude>
+    <ClInclude Include="DataProcessingEngine.h">
+      <Filter>Header Files\DataProcessingEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="HostPoll.h">
+      <Filter>Header Files\PollEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="PollEngine.h">
+      <Filter>Header Files\PollEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="ModbusDriverTCP.h">
+      <Filter>Header Files\ModbusDriverTCP</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

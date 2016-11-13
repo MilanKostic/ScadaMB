@@ -2,6 +2,8 @@
 #include <iostream>
 #include <string>
 #include <list>
+#include "Socket.h"
+
 //#include "AnalogInput.h"
 #include "AnalogOutput.h"
 #include "DigitalDevice.h"
@@ -16,10 +18,11 @@ private:
 	string transportProtocol;
 	string ipAddress;
 	int port;
+	SOCKET socket;
 
-	map<unsigned short, AnalogInput> analogInputList;
-	map<unsigned short, AnalogOutput> analogOutputList;
-	map<unsigned short, DigitalDevice> digitalDevices;
+	map<unsigned short, AnalogInput*> analogInputList;
+	map<unsigned short, AnalogOutput*> analogOutputList;
+	map<unsigned short, DigitalDevice*> digitalDevices;
 
 public:
 	RTU(int id, string industrialProtocol, string transportProtocol, string ipAddress, int port);
@@ -33,7 +36,13 @@ public:
 	string GetIpAddress();
 	int GetPort();
 
-	map<unsigned short, AnalogInput> GetAnalogInputList();
-	map<unsigned short, AnalogOutput> GetAnalogOutoputList();
-	map<unsigned short, DigitalDevice> GetDigitalDevices();
+	map<unsigned short, AnalogInput*> GetAnalogInputList();
+	map<unsigned short, AnalogOutput*> GetAnalogOutoputList();
+	map<unsigned short, DigitalDevice*> GetDigitalDevices();
+
+	void AddAnalogInput(AnalogInput* analogInput);
+	void AddAnalogOutput(AnalogOutput* analogOutput);
+	void AddDigitalDevice(DigitalDevice* digitalDevice);
+
+	SOCKET GetSocket();
 };

@@ -18,8 +18,8 @@ private:
 	const string analogOutputNode = "analogOutput";
 	const string digitalInputNode = "digitalInput";
 	const string digitalOutputNode = "digitalOutput";
-	void InsertRTU(const xml_node<>* node, RTDB* realTimeDatabase, int rtuId);
+	void InsertRTU(const xml_node<>* node, int rtuId);
 public:
 	ScadaConfig();
-	void LoadScadaParams(RTDB* realTimeDatabase);
+	void LoadScadaParams();
 };

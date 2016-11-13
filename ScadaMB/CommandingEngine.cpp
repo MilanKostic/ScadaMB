@@ -37,16 +37,16 @@ void CommandingEngine::StartIncrement100UnitPS()
 
 void IncrementForOneRTU(RTU *rtu) {
 	while (true) {
-		if (rtu->GetDigitalDevices().find(PointAddress::ventilVode)->second.GetPointState() == PointState::On) {
-			ModbusDriverTCP::Instance()->SendModbusMessage(NULL/*Soket od RTU-a*/,
+		if (rtu->GetDigitalDevices().find(PointAddress::ventilVode)->second->GetPointState() == PointState::On) {
+			ModbusDriverTCP::Instance()->SendModbusMessage(rtu->GetSocket()/*Soket od RTU-a*/,
 				new WriteSingleRegisterMessage(PointAddress::kolicinaVodeOut, 100));
 		}
-		if (rtu->GetDigitalDevices().find(PointAddress::ventilPeska)->second.GetPointState() == PointState::On) {
-			ModbusDriverTCP::Instance()->SendModbusMessage(NULL/*Soket od RTU-a*/,
+		if (rtu->GetDigitalDevices().find(PointAddress::ventilPeska)->second->GetPointState() == PointState::On) {
+			ModbusDriverTCP::Instance()->SendModbusMessage(rtu->GetSocket()/*Soket od RTU-a*/,
 				new WriteSingleRegisterMessage(PointAddress::kolicinaPijeskaOut, 100));
 		}
-		if (rtu->GetDigitalDevices().find(PointAddress::ventilSljunka)->second.GetPointState() == PointState::On) {
-			ModbusDriverTCP::Instance()->SendModbusMessage(NULL/*Soket od RTU-a*/,
+		if (rtu->GetDigitalDevices().find(PointAddress::ventilSljunka)->second->GetPointState() == PointState::On) {
+			ModbusDriverTCP::Instance()->SendModbusMessage(rtu->GetSocket()/*Soket od RTU-a*/,
 				new WriteSingleRegisterMessage(PointAddress::kolicinaSljunkaOut, 100));
 		}
 		Sleep(1000);

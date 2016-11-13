@@ -6,11 +6,6 @@
 class ReadDescreteInputsMessage : public ReadCoilsMessage
 {
 private:
-	unsigned short startingAddress;
-	unsigned short quantityOfCoils;
-
-	char byteCount;
-	char* coilStatus;
 public:
 	ReadDescreteInputsMessage(unsigned short startingAddress, unsigned short quantityOfInputs);
 	ReadDescreteInputsMessage();

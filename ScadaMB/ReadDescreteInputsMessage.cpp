@@ -13,6 +13,7 @@ ReadDescreteInputsMessage::ReadDescreteInputsMessage()
 }
 
 ReadDescreteInputsMessage::ReadDescreteInputsMessage(char* bytes)
+	: ReadCoilsMessage(bytes)
 {
 	this->functionCode = ModbusMessageTypes::READ_DESCRETE_INPUTS;
 }

@@ -45,7 +45,7 @@ void ReadCoilsMessage::Deserialize(char* msg)
 	temp[0] = msg[headerLength + 1];
 	temp[1] = 0;
 	memcpy(&this->byteCount, temp, 2);
-	this->coilStatus = new char(this->byteCount);
+	this->coilStatus = new char[this->byteCount];
 	memcpy(this->coilStatus, &msg[headerLength + 2], this->byteCount);
 	this->messageLength = headerLength + this->header.length - 1;
 }
@@ -58,5 +58,10 @@ void ReadCoilsMessage::SetStartingAddress(unsigned short sa)
 void ReadCoilsMessage::setQuantityOfCoils(unsigned short qc)
 {
 	this->quantityOfCoils = qc;
+}
+
+bool ReadCoilsMessage::GetBit(char c, unsigned short position)
+{
+	return (c >> position) & 0x01;
 }
 

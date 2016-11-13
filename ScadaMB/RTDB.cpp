@@ -17,17 +17,17 @@ char* RTDB::GetCurrentValues()
 	for each (pair<int, RTU*> rtu in listOfRemotes)
 	{
 		answer += "RTU " + to_string(rtu.second->GetID());
-		for each (pair<unsigned int,AnalogOutput> analogOut in rtu.second->GetAnalogOutoputList())
+		for each (pair<unsigned int,AnalogOutput*> analogOut in rtu.second->GetAnalogOutoputList())
 		{
-			answer += "\t" + analogOut.second.GetName() + " " + to_string(analogOut.second.GetEgu()) + "\n";
+			answer += "\t" + analogOut.second->GetName() + " " + to_string(analogOut.second->GetEgu()) + "\n";
 		}
-		for each (pair<unsigned int, AnalogInput> analogIn in rtu.second->GetAnalogOutoputList())
+		for each (pair<unsigned int, AnalogInput*> analogIn in rtu.second->GetAnalogOutoputList())
 		{
-			answer += "\t" + analogIn.second.GetName() + " " + to_string(analogIn.second.GetEgu()) + "\n";
+			answer += "\t" + analogIn.second->GetName() + " " + to_string(analogIn.second->GetEgu()) + "\n";
 		}
-		for each (pair<unsigned int, DigitalDevice> dev in rtu.second->GetDigitalDevices())
+		for each (pair<unsigned int, DigitalDevice*> dev in rtu.second->GetDigitalDevices())
 		{
-			answer += "\t" + dev.second.GetName() + " " + to_string(dev.second.GetPointState()) + "\n";
+			answer += "\t" + dev.second->GetName() + " " + to_string(dev.second->GetPointState()) + "\n";
 		}
 	}
 	char * writable = new char[answer.size() + 1];
@@ -45,4 +45,9 @@ map<int, RTU*> RTDB::AddRTU(RTU * device)
 {
 	listOfRemotes.insert(std::pair<int, RTU*>(device->GetID(), device));
 	return listOfRemotes;
+}
+
+RTU * RTDB::GetRTU(int id)
+{
+	return this->listOfRemotes[id];
 }
