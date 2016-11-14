@@ -39,6 +39,7 @@ void RTU::AddAnalogOutput(AnalogOutput * analogOutput)
 
 void RTU::AddDigitalDevice(DigitalDevice * digitalDevice)
 {
+	this->digitalDevices.insert(std::pair<unsigned short, DigitalDevice*>(digitalDevice->GetId(), digitalDevice));
 }
 
 SOCKET RTU::GetSocket()

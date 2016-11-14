@@ -21,9 +21,9 @@ CommandingEngine * CommandingEngine::Instance()
 
 void CommandingEngine::CreateCommand(char * message)
 {
-	switch(message[2]){
-		case '1': { ModbusDriverTCP::Instance()->SendModbusMessage(NULL /*Soket od RTU - a*/ ,
-			new WriteSingleCoilMessage(PointAddress::dozvolaPraznjenjaMjesalice, *(int*)(message+2))); break; }
+	switch(message[1]){
+	case '1': { ModbusDriverTCP::Instance()->SendModbusMessage(RTDB::Instance()->GetRTU(PointAddress::rtuId)->GetSocket() /*Soket od RTU - a*/ ,
+			new WriteSingleCoilMessage(PointAddress::dozvolaPraznjenjaMjesalice, (PointState)*(int*)(message+2))); break; }
 	}
 }
 
@@ -31,7 +31,7 @@ void CommandingEngine::StartIncrement100UnitPS()
 {
 	for each (pair<int, RTU*> rtu in RTDB::Instance()->GetRemotes())
 	{
-		std::thread t1(IncrementForOneRTU, rtu.second);
+		std::thread(IncrementForOneRTU, rtu.second).detach();
 	}
 }
 

@@ -1,21 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <scada_config>
-  <rtu ipAddress="127.0.0.1" port="502" id="1" industrialProtocol="modbus" transportProtocol="TCP">
+  <rtu ipAddress="127.0.0.1" port="502" id="1" industrialProtocol="Modbus" transportProtocol="TCP">
     
    <analogInputs>
-      <analogInput name="i1" address="0x0001" eguMin="20.00" eguMax="100.00" timeStamp="1" rawMin="0" rawMax="65000" />
-    </analogInputs>
+      
+   </analogInputs>
 
     <analogOutputs>
-      <analogOutput name="i1" address="0x0001" eguMin="20.00" eguMax="100.00" timeStamp="1" rawMin="0" rawMax="65000" eguSetpoint="12.00" setPointTimestamp="2" />
+      <analogOutput name="kolicinaVode" address="40001" eguMin="0.00" eguMax="100000" timeStamp="1" rawMin="0" rawMax="4095" />
+      <analogOutput name="kolicinaPijeska" address="40002" eguMin="0.00" eguMax="100000" timeStamp="1" rawMin="0" rawMax="4095" />
+      <analogOutput name="kolicinaSljunka" address="40003" eguMin="0.00" eguMax="100000" timeStamp="1" rawMin="0" rawMax="4095" />
     </analogOutputs>
 
-    <digitalInputs>
-      <digitalInput name="d1" address=""/>
-    </digitalInputs>
-
-    <digitalOutputs>
-    </digitalOutputs>
-      
+    <digitalDevices>
+      <digitalDevice id="1" name="ventilVode" inAddress1="10001" inAddress2="10002" outAddress="00001" isReadOnly="true"/>
+      <digitalDevice id="2" name="ventilPijeska" inAddress1="10003" inAddress2="10004" outAddress="00002" isReadOnly="true"/>
+      <digitalDevice id="3" name="ventilSljunka" inAddress1="10005" inAddress2="10006" outAddress="00003" isReadOnly="true"/>
+      <digitalDevice id="4" name="mijesanje" inAddress1="10007" inAddress2="10008" outAddress="00004" isReadOnly="true"/>
+      <digitalDevice id="5" name="kamionDetektovan" inAddress1="10009" inAddress2="10010" outAddress="00005" isReadOnly="true"/>
+      <digitalDevice id="6" name="dozvolaPraznjenjaMjesalice" inAddress1="10011" inAddress2="10012" outAddress="00006" isReadOnly="false"/>
+      <digitalDevice id="7" name="stanjeMjesalice" inAddress1="10013" inAddress2="10014" outAddress="00007" isReadOnly="false"/>
+    </digitalDevices>
+        
   </rtu>
 </scada_config>

@@ -1,19 +1,31 @@
 #include "DigitalDevice.h"
 
-DigitalDevice::DigitalDevice(string name, bool readOnly, unsigned int inAddress[2], unsigned int outAddress[2], PointState state, PointStatus status, PointState command/*, RTU *rtu*/)
+DigitalDevice::DigitalDevice(unsigned short id, string name, bool readOnly, unsigned short inAddr1, unsigned short inAddr2, unsigned short outAddress, PointState state, PointStatus status, PointState command/*, RTU *rtu*/)
 {
+	this->id = id;
 	this->name = name;
 	this->isReadOnly = readOnly;
-	this->inAddress[0] = inAddress[0];
-	this->inAddress[1] = inAddress[1];
-	this->outAddress[0] = outAddress[0];
-	this->outAddress[1] = outAddress[1];
+	this->inAddresses[0] = inAddr1;
+	this->inAddresses[1] = inAddr2;
+	this->outAddress = outAddress;
 	this->state = state;
 	this->status = status;
 	this->command = command;
 	//this->rtu = rtu;
 }
 
+
+DigitalDevice::DigitalDevice(unsigned short id, string name, bool readOnly, unsigned short inAddr1, unsigned short inAddr2, unsigned short outAddress)
+{
+	this->id = id;
+	this->name = name;
+	this->isReadOnly = readOnly;
+	this->inAddresses[0] = inAddr1;
+	this->inAddresses[1] = inAddr2;
+	this->outAddress = outAddress;
+	this->status = PointStatus::OnScan;
+	this->state = PointState::Off;
+}
 
 void DigitalDevice::SetCommand(PointState value)
 {
@@ -32,7 +44,7 @@ void DigitalDevice::SetStatus(PointStatus value)
 
 string DigitalDevice::GetName()
 {
-	return string();
+	return this->name;
 }
 
 bool DigitalDevice::IsReadOnly()
@@ -40,14 +52,19 @@ bool DigitalDevice::IsReadOnly()
 	return isReadOnly;
 }
 
-unsigned short DigitalDevice::GetInAddress()
+unsigned short* DigitalDevice::GetInAddresses()
 {
-	return *inAddress;
+	return inAddresses;
 }
 
 unsigned short DigitalDevice::GetOutAddress()
 {
-	return *outAddress;
+	return outAddress;
+}
+
+unsigned short DigitalDevice::GetId()
+{
+	return this->id;
 }
 
 PointState DigitalDevice::GetPointState()

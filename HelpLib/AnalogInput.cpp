@@ -110,6 +110,7 @@ void AnalogInput::SetRawMax(double value)
 void AnalogInput::SetRaw(double value)
 {
 	raw = value;
+	egu = ToEgu(raw);
 }
 
 void AnalogInput::SetTimestamp(int value)
@@ -120,6 +121,14 @@ void AnalogInput::SetTimestamp(int value)
 void AnalogInput::SetPointStatus(PointStatus value)
 {
 	status = value;
+}
+unsigned short AnalogInput::ToRaw(double egu)
+{
+	return egu / (10 * 1.00);
+}
+double AnalogInput::ToEgu(unsigned short raw)
+{
+	return raw * 10;
 }
 /*
 void AnalogInput::SetRTU(RTU *value)

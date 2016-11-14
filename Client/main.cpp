@@ -30,7 +30,7 @@ int main() {
 void ShowMonitoringValues(SOCKET serverSocket, char* sendBuffer) {
 	sendBuffer[0] = 'r';
 	
-	char* accessBuffer = new char(1024);
+	char* accessBuffer = new char[1024];
 	Socket::Instance()->Send(serverSocket, sendBuffer, 6);
 	while (true)
 	{
@@ -58,7 +58,7 @@ void ShowMonitoringValues(SOCKET serverSocket, char* sendBuffer) {
 		}
 
 		if (iResult < 1024) {
-			char *writeBuffer = new char(iResult);
+			char *writeBuffer = new char[iResult];
 			memcpy(writeBuffer, accessBuffer, iResult);
 			cout << writeBuffer;
 			break;

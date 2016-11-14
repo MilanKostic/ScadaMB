@@ -72,21 +72,23 @@ void ScadaConfig::InsertRTU(const xml_node<>* current, int rtuId)
 				double rawMin = stod(current->first_attribute("rawMin")->value());
 				double rawMax = stod(current->first_attribute("rawMax")->value());
 				int timeStamp = atoi(current->first_attribute("timeStamp")->value());
-				double eguSetpoint = stod(current->first_attribute("eguSetpoint")->value());
-				int setPointTimestamp = atoi(current->first_attribute("setPointTimestamp")->value());
 
-				AnalogOutput* newAnalogOutput = new AnalogOutput(name, address, eguMin, eguMax, rawMin, rawMax, timeStamp, eguSetpoint, setPointTimestamp);
+				AnalogOutput* newAnalogOutput = new AnalogOutput(name, address, eguMin, eguMax, rawMin, rawMax, timeStamp, 0.00, 0);
 				RTDB::Instance()->GetRTU(rtuId)->AddAnalogOutput(newAnalogOutput);
 			}
-			else if (current->name() == ScadaConfig::digitalInputNode)
+			else if (current->name() == ScadaConfig::digitalDevice)
 			{
+				unsigned short id = (unsigned short)atoi(current->first_attribute("id")->value());
+				string name = current->first_attribute("name")->value();
+				bool isReadOnly = current->first_attribute("isReadOnly")->value() == "true";
+				unsigned short addr1 = (unsigned short)atoi(current->first_attribute("inAddress1")->value());
+				unsigned short addr2 = (unsigned short)atoi(current->first_attribute("inAddress2")->value());
+				unsigned short outAddress = (unsigned short)atoi(current->first_attribute("outAddress")->value());
 
+				DigitalDevice* newDigitalDevice = new DigitalDevice(id, name, isReadOnly, addr1, addr2, outAddress);
+				RTDB::Instance()->GetRTU(rtuId)->AddDigitalDevice(newDigitalDevice);
 			}
-			else if (current->name() == ScadaConfig::digitalOutputNode)
-			{
-
-			}
-
+			
 			for (xml_node<>* n = current->first_node(); n; n = n->next_sibling())
 			{
 				this->InsertRTU(n, rtuId);

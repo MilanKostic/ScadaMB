@@ -1,6 +1,8 @@
 #pragma once
 
 #include "ModbusMessageTCP.h"
+#include "RTDB.h"
+#include "RTU.h"
 
 class ReadCoilsMessage : public ModbusMessageTCP
 {
@@ -18,5 +20,8 @@ public:
 	virtual void Deserialize(char* msg);
 	void SetStartingAddress(unsigned short sa);
 	void setQuantityOfCoils(unsigned short qc);
+	unsigned short GetQuantityOfCoils();
 	bool GetBit(char c, unsigned short position);
+	unsigned short GetStartingAddress();
+	virtual void Crunch(int rtuId, ModbusMessageTCP* req);
 };

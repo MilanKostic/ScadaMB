@@ -13,6 +13,8 @@ private:
 public:
 	PollEngine();
 	void Poll();
+	DataProcessingEngine* GetDPE();
 };
 
-void PollThread();
+void PollThread(PollEngine* pollEngine);
+void ProcessThread(DataProcessingEngine* dpe);

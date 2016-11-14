@@ -1,6 +1,7 @@
 #include "ReadHoldingRegistersMessage.h"
 #include <string>
 #include "Socket.h"
+#include "RTDB.h"
 
 ReadHoldingRegistersMessage::ReadHoldingRegistersMessage(unsigned short startingAddress, unsigned short quantityOfRegisters)
 {
@@ -52,4 +53,17 @@ void ReadHoldingRegistersMessage::Deserialize(char * buffer)
 		this->registerValue[i] = ntohs(this->registerValue[i]);
 	}
 	this->messageLength = headerLength + this->header.length - 1;
+}
+
+void ReadHoldingRegistersMessage::Crunch(int rtuId, ModbusMessageTCP* req)
+{
+	RTU* rtu = RTDB::Instance()->GetRTU(rtuId);
+	ReadHoldingRegistersMessage* reqHolding = (ReadHoldingRegistersMessage*)req;
+	AnalogOutput* analogOutput = rtu->GetAnalogOutoputList().find(reqHolding->GetStartingAddress())->second;
+	analogOutput->SetRaw(this->registerValue[0]);
+}
+
+unsigned short ReadHoldingRegistersMessage::GetStartingAddress()
+{
+	return this->startingAddress;
 }

@@ -51,5 +51,7 @@ public:
 	void SetRaw(double value);
 	void SetTimestamp(int value);
 	void SetPointStatus(PointStatus value);
+	unsigned short ToRaw(double egu);
+	double ToEgu(unsigned short raw);
 	//void SetRTU(RTU *value);
 };

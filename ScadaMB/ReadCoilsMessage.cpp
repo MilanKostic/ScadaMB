@@ -60,8 +60,45 @@ void ReadCoilsMessage::setQuantityOfCoils(unsigned short qc)
 	this->quantityOfCoils = qc;
 }
 
+unsigned short ReadCoilsMessage::GetQuantityOfCoils()
+{
+	return this->quantityOfCoils;
+}
+
 bool ReadCoilsMessage::GetBit(char c, unsigned short position)
 {
 	return (c >> position) & 0x01;
+}
+
+unsigned short ReadCoilsMessage::GetStartingAddress()
+{
+	return this->startingAddress;
+}
+
+void ReadCoilsMessage::Crunch(int rtuId, ModbusMessageTCP* req)
+{
+	ReadCoilsMessage* reqCoils = (ReadCoilsMessage*)req;
+	RTU* rtu = RTDB::Instance()->GetRTU(rtuId);
+	for each(std::pair<unsigned short, DigitalDevice*> device in rtu->GetDigitalDevices())
+	{
+		if (device.second->GetInAddresses()[0] == reqCoils->GetStartingAddress())
+		{
+			//unsigned short coilCount = reqCoils->GetQuantityOfCoils();
+			bool coil1 = this->GetBit(this->coilStatus[0], 1);
+			bool coil2 = this->GetBit(this->coilStatus[0], 2);
+			if (coil1 && coil2) device.second->SetState(PointState::Error);
+			else if (coil1 && !coil2) device.second->SetState(PointState::On);
+			else if (!coil1 && coil2) device.second->SetState(PointState::Off);
+			else if (!coil1 && !coil2) device.second->SetState(PointState::Progress);
+
+			if (device.second->GetId() == PointAddress::dozvolaPraznjenjaMjesalice && device.second->GetPointState() == PointState::On && device.second->GetCommand() == PointState::Off)
+			{
+				//Generisi alarm
+			}
+			break;
+		}
+	}
+	
+
 }
 

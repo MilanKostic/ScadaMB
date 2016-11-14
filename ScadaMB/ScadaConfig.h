@@ -16,8 +16,7 @@ private:
 	const string rtuNode = "rtu";
 	const string analogInputNode = "analogInput";
 	const string analogOutputNode = "analogOutput";
-	const string digitalInputNode = "digitalInput";
-	const string digitalOutputNode = "digitalOutput";
+	const string digitalDevice = "digitalDevice";
 	void InsertRTU(const xml_node<>* node, int rtuId);
 public:
 	ScadaConfig();

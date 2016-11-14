@@ -43,3 +43,7 @@ void ModbusMessageTCP::SetMessageLength(int msgLen)
 {
 	this->messageLength = msgLen;
 }
+
+void ModbusMessageTCP::Crunch(int rtuId, ModbusMessageTCP* req)
+{
+}

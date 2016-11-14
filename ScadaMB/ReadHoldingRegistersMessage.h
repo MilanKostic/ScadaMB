@@ -16,4 +16,6 @@ public:
 	ReadHoldingRegistersMessage(char* bytes);
 	virtual char* Serialize();
 	virtual void Deserialize(char* buffer);
+	virtual void Crunch(int rtuId, ModbusMessageTCP* req);
+	unsigned short GetStartingAddress();
 };

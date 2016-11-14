@@ -12,7 +12,7 @@ WriteSingleCoilMessage::WriteSingleCoilMessage(char* buffer)
 	this->Deserialize(buffer);
 }
 
-WriteSingleCoilMessage::WriteSingleCoilMessage(unsigned short outputAddress, unsigned short outputValue)
+WriteSingleCoilMessage::WriteSingleCoilMessage(unsigned short outputAddress, PointState outputValue)
 {
 	this->functionCode = ModbusMessageTypes::WRITE_SINGLE_COIL;
 	this->header.transactionIdentifier = htons(0x0001);

@@ -130,9 +130,8 @@ void ClientHandler::ServerThread(char * port)
 			break;
 		}
 
-		std::thread t1(ReceiveFunction, acceptedSocket);
+		std::thread(ReceiveFunction, acceptedSocket).detach();
 		// da li ovdje raditi smijestanje u listu tredova
-		t1.join();
 	}
 	closesocket(listenSocket);
 }
