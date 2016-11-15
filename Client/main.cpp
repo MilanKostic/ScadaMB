@@ -17,12 +17,13 @@ int main() {
 		cout << "2. Izmjena vrijednosti velicina\n";
 		cout << "0. Izlaz\n";
 		cin >> menuValue;
+		system("cls");
 
 		switch (menuValue) {
 		case 1: { ShowMonitoringValues(serverSocket, sendBuffer); break; }
 		case 2: { ServeCommandMenu(serverSocket, sendBuffer); break; }
 		}
-
+		
 	} while (menuValue != 0);
 	free(sendBuffer);
 }
@@ -60,11 +61,11 @@ void ShowMonitoringValues(SOCKET serverSocket, char* sendBuffer) {
 		if (iResult < 1024) {
 			char *writeBuffer = new char[iResult];
 			memcpy(writeBuffer, accessBuffer, iResult);
-			cout << writeBuffer;
+			cout << writeBuffer << endl;
 			break;
 		}
 		else {
-			cout << accessBuffer;
+			cout << accessBuffer << endl;
 		}
 		
 	}
@@ -72,6 +73,7 @@ void ShowMonitoringValues(SOCKET serverSocket, char* sendBuffer) {
 }
 
 void  ServeCommandMenu(SOCKET serverSocket, char* sendBuffer) {
+	
 	sendBuffer[0] = 'c';
 	char menuValue;
 	int value;
@@ -79,7 +81,7 @@ void  ServeCommandMenu(SOCKET serverSocket, char* sendBuffer) {
 		cout << "1. Dozvola praznjenja mjesalice (1/0)\n";
 		cout << "0. Izlaz\n";
 		cin >> menuValue;
-
+		
 		if (menuValue != '0') {
 			cout << "Vrednost: ";
 			cin >> value;
@@ -87,5 +89,6 @@ void  ServeCommandMenu(SOCKET serverSocket, char* sendBuffer) {
 			*(int*)&sendBuffer[2] = value;
 			Socket::Instance()->Send(serverSocket, sendBuffer, 6);
 		}
+		system("cls");
 	} while (menuValue != '0');
 }
