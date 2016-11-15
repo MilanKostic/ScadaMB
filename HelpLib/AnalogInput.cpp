@@ -128,7 +128,7 @@ unsigned short AnalogInput::ToRaw(double egu)
 }
 double AnalogInput::ToEgu(unsigned short raw)
 {
-	return raw * 10;
+	return raw * 10; //
 }
 /*
 void AnalogInput::SetRTU(RTU *value)
