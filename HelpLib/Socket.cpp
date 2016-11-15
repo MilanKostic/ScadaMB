@@ -100,29 +100,32 @@ SOCKET Socket::Connect(char* ipAddress, int port)
 	return connectSocket;
 }
 
-bool Socket::Send(SOCKET socket, char* data, int length)
+bool Socket::Send(SocketStruct* socket, char* data, int length)
 {
+	socket->lock.lock();
 	while (true)
 	{
 
-		int iResult = Select(socket, 1);
+		int iResult = Select(socket->socket, 1);
 
 		if (iResult == SOCKET_ERROR)
 		{
 			fprintf(stderr, "select failed with error: %ld\n", WSAGetLastError());
+			socket->lock.unlock();
 			return false;
 		}
 
 		if (iResult == 0)
 		{
-			Sleep(sendSleepInterval);
+			this_thread::sleep_for(chrono::milliseconds(100));
 			continue;
 		}
-		iResult = send(socket, data, length, 0);
+		iResult = send(socket->socket, data, length, 0);
 
 		if (iResult == SOCKET_ERROR)
 		{
 			printf("Socket error in send method\n");
+			socket->lock.unlock();
 			return false;
 		}
 
@@ -130,8 +133,10 @@ bool Socket::Send(SOCKET socket, char* data, int length)
 		data += iResult;
 		if (length == 0)
 		{
+			socket->lock.unlock();
 			return true;
 		}
 	}
+	socket->lock.unlock();
 }
 

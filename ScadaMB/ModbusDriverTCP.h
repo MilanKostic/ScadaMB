@@ -13,6 +13,6 @@ private:
 	ModbusMessageTCP* ProcessAccessBuffer(char* buffer);
 public:
 	static ModbusDriverTCP *Instance();
-	ModbusMessageTCP* SendModbusMessage(SOCKET socket, ModbusMessageTCP* modbusMessage);
-	ModbusMessageTCP* Receive(SOCKET socket);
+	ModbusMessageTCP* SendModbusMessage(SocketStruct* socket, ModbusMessageTCP* modbusMessage);
+	ModbusMessageTCP* Receive(SocketStruct* socket);
 };

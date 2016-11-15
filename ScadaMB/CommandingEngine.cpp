@@ -42,13 +42,15 @@ void IncrementForOneRTU(RTU *rtu) {
 				new WriteSingleRegisterMessage(PointAddress::kolicinaVodeOut, rtu->GetAnalogOutputValue(PointAddress::kolicinaVodeOut) + 100));
 		}
 		if (rtu->GetDigitalDevices().find(PointAddress::ventilPeska)->second->GetPointState() == PointState::On) {
-			ModbusDriverTCP::Instance()->SendModbusMessage(rtu->GetSocket()/*Soket od RTU-a*/,
+			WriteSingleRegisterMessage* response = (WriteSingleRegisterMessage*)ModbusDriverTCP::Instance()->SendModbusMessage(rtu->GetSocket()/*Soket od RTU-a*/,
 				new WriteSingleRegisterMessage(PointAddress::kolicinaPijeskaOut, rtu->GetAnalogOutputValue(PointAddress::kolicinaPijeskaOut) + 100));
+			cout << "Increment 100" << endl;
 		}
 		if (rtu->GetDigitalDevices().find(PointAddress::ventilSljunka)->second->GetPointState() == PointState::On) {
 			ModbusDriverTCP::Instance()->SendModbusMessage(rtu->GetSocket()/*Soket od RTU-a*/,
 				new WriteSingleRegisterMessage(PointAddress::kolicinaSljunkaOut, rtu->GetAnalogOutputValue(PointAddress::kolicinaSljunkaOut) + 100));
 		}
-		Sleep(1000);
+		
+		this_thread::sleep_for(chrono::milliseconds(1000));
 	}
 }

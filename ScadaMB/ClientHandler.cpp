@@ -1,7 +1,7 @@
 #include "ClientHandler.h"
 #include "RTDB.h"
 
-void ReceiveFunction(SOCKET socket) {
+void ReceiveFunction(SocketStruct* socket) {
 	ClientHandler::Instance()->Receive(socket);
 }
 
@@ -130,18 +130,20 @@ void ClientHandler::ServerThread(char * port)
 			break;
 		}
 
-		std::thread(ReceiveFunction, acceptedSocket).detach();
+		SocketStruct sc;
+		sc.socket = acceptedSocket;
+		std::thread(ReceiveFunction, &sc).detach();
 		// da li ovdje raditi smijestanje u listu tredova
 	}
 	closesocket(listenSocket);
 }
 
-void ClientHandler::Receive(SOCKET socket) {
+void ClientHandler::Receive(SocketStruct* socket) {
 	char accessBuffer[6];
 
 	while (true)
 	{
-		int iResultSelect = Socket::Instance()->Select(socket, 0);
+		int iResultSelect = Socket::Instance()->Select(socket->socket, 0);
 		if (iResultSelect == SOCKET_ERROR)
 		{
 			fprintf(stderr, "select failed with error: %ld\n", WSAGetLastError());
@@ -153,7 +155,7 @@ void ClientHandler::Receive(SOCKET socket) {
 			Sleep(20);
 			continue;
 		}
-		int iResult = recv(socket, accessBuffer, 6, 0);
+		int iResult = recv(socket->socket, accessBuffer, 6, 0);
 
 		if (iResult == SOCKET_ERROR) {
 			printf("Error in receive: %d", WSAGetLastError());
@@ -176,6 +178,6 @@ void ClientHandler::Receive(SOCKET socket) {
 		}
 	}
 	
-	closesocket(socket);
+	closesocket(socket->socket);
 }
 
