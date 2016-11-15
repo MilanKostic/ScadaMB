@@ -14,7 +14,7 @@ public:
 	Alarm(RTU *rtuDevice, DigitalDevice *digitalDevice);
 	RTU *GetRTU();
 	DigitalDevice *GetDigitalDevice();
-	string GetMessage();
+	string GetAlarmMessage();
 	bool IsInhibition();
 	bool IsAccepted();
 

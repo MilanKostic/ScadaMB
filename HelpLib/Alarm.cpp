@@ -19,7 +19,7 @@ DigitalDevice * Alarm::GetDigitalDevice()
 	return digitalDevice;
 }
 
-string Alarm::GetMessage()
+string Alarm::GetAlarmMessage()
 {
 	return message;
 }

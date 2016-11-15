@@ -124,11 +124,11 @@ void AnalogInput::SetPointStatus(PointStatus value)
 }
 unsigned short AnalogInput::ToRaw(double egu)
 {
-	return egu / (10 * 1.00);
+	return rawMin + ((rawMax - rawMin) * (egu - eguMin)) / (eguMax - eguMin);
 }
 double AnalogInput::ToEgu(unsigned short raw)
 {
-	return raw * 10; //
+	return eguMin + ((eguMax - eguMin) * (raw - rawMin)) / (rawMax - rawMin);
 }
 /*
 void AnalogInput::SetRTU(RTU *value)

@@ -44,7 +44,7 @@ public:
 	void AddAnalogOutput(AnalogOutput* analogOutput);
 	void AddDigitalDevice(DigitalDevice* digitalDevice);
 	
-	double GetAnalogOutputValue(unsigned short address);
+	unsigned short GetIncrementValue(unsigned short address);
 
 	SocketStruct* GetSocket();
 };

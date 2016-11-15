@@ -2,6 +2,10 @@
 
 RTDB * RTDB::instance = NULL;
 
+RTDB::RTDB()
+{
+}
+
 RTDB * RTDB::Instance()
 {
 	if (instance == NULL) {
@@ -60,6 +64,12 @@ map<int, list<Alarm*>> RTDB::GetAlarmMap()
 void RTDB::AddAlarm(Alarm *newAlarm)
 {
 	//koji je id od device-a
-
+	if (alarmList.size() == 0)
+	{
+		for each(std::pair<int, RTU*> rtu in this->listOfRemotes)
+		{
+			this->alarmList.insert(std::pair<int, list<Alarm*>>(rtu.first, list<Alarm*>()));
+		}
+	}
 	alarmList.find(newAlarm->GetRTU()->GetID())->second.push_back(newAlarm);
 }

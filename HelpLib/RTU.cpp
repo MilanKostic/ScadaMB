@@ -42,11 +42,11 @@ void RTU::AddDigitalDevice(DigitalDevice * digitalDevice)
 	this->digitalDevices.insert(std::pair<unsigned short, DigitalDevice*>(digitalDevice->GetId(), digitalDevice));
 }
 
-double RTU::GetAnalogOutputValue(unsigned short address)
+unsigned short RTU::GetIncrementValue(unsigned short address)
 {
 	for each(std::pair<unsigned short, AnalogOutput*> ao in this->analogOutputList)
 	{
-		if (ao.second->GetAddress() == address) return ao.second->GetRaw();
+		if (ao.second->GetAddress() == address) return ao.second->ToRaw(ao.second->GetEgu() + 100.00);
 	}
 	return 0.0;
 }

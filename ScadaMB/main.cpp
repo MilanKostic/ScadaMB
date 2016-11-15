@@ -26,6 +26,8 @@ int main()
 	thread(&PollThread, &pe).detach();
 	thread(&ProcessThread, dpe).detach();
 	
+	ClientHandler::Instance()->AlarmListening();
+
 	ClientHandler::Instance()->ServerThread("9000");
 	/*SOCKET socket = Socket::Instance()->Connect("127.0.0.1", 502);
 

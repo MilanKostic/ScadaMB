@@ -5,7 +5,7 @@ void ReceiveFunction(SocketStruct* socket) {
 	ClientHandler::Instance()->Receive(socket);
 }
 
-void AlarmListeningThread(list<SocketStruct*> acceptedSocketList)
+void AlarmListeningThread(list<SocketStruct*>* acceptedSocketList)
 {
 	while (true) {
 		for each (pair<int, list<Alarm*>> rtuPair in RTDB::Instance()->GetAlarmMap())
@@ -14,12 +14,14 @@ void AlarmListeningThread(list<SocketStruct*> acceptedSocketList)
 			{
 				if (!alarm->IsAccepted())
 				{
-					for each (SocketStruct *soc in acceptedSocketList)
+					for each (SocketStruct *soc in *acceptedSocketList)
 					{
 						Socket::Instance()->Select(soc->socket, 1);
-						char * writable = new char[alarm->GetMessageW().length() + 1];
-						copy(alarm->GetMessageW().begin(), alarm->GetMessageW().end(), writable);
-						writable[alarm->GetMessageW().size()] = '\0';
+						char * writable = new char[alarm->GetAlarmMessage().length() + 1];
+						memcpy(writable, alarm->GetAlarmMessage().c_str(), alarm->GetAlarmMessage().length());
+
+						//copy(alarm->GetAlarmMessage().begin(), alarm->GetAlarmMessage().end(), writable);
+						writable[alarm->GetAlarmMessage().size()] = '\0';
 						Socket::Instance()->Send(soc, writable, strlen(writable) + 1);
 						alarm->SetAcception(true);
 					}
@@ -215,7 +217,7 @@ void ClientHandler::Receive(SocketStruct* socket) {
 
 void ClientHandler::AlarmListening()
 {
-	std::thread(AlarmListeningThread, acceptedSocketList).detach();
+	std::thread(AlarmListeningThread, &acceptedSocketList).detach();
 }
 
 list<SocketStruct*> ClientHandler::GetAcceptedSocketList()

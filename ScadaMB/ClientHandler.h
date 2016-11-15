@@ -18,5 +18,5 @@ public:
 };
 
 void ReceiveFunction(SocketStruct* socket);
-void AlarmListeningThread(list<SocketStruct*> acceptedSocketList);
+void AlarmListeningThread(list<SocketStruct*>* acceptedSocketList);
 
