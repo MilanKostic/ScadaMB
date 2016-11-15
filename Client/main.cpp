@@ -14,16 +14,19 @@ int main() {
 
 	int menuValue;
 	do {
+		cout << endl;
 		cout << "1. Prikaz trenutnih velicina\n";
 		cout << "2. Izmjena vrijednosti velicina\n";
 		cout << "0. Izlaz\n";
 		cin >> menuValue;
 
+		system("cls");
+
 		switch (menuValue) {
 		case 1: { ShowMonitoringValues(&serverSocket, sendBuffer); break; }
 		case 2: { ServeCommandMenu(&serverSocket, sendBuffer); break; }
 		}
-
+		
 	} while (menuValue != 0);
 	free(sendBuffer);
 }
@@ -80,6 +83,8 @@ void  ServeCommandMenu(SocketStruct* serverSocket, char* sendBuffer) {
 		cout << "1. Dozvola praznjenja mjesalice (1/0)\n";
 		cout << "0. Izlaz\n";
 		cin >> menuValue;
+		
+		system("cls");
 
 		if (menuValue != '0') {
 			cout << "Vrednost: ";

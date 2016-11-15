@@ -11,6 +11,7 @@ private:
 	static const unsigned short accessBufferLength = 1024;
 	char accessBuffer[accessBufferLength];
 	ModbusMessageTCP* ProcessAccessBuffer(char* buffer);
+	mutex sendMutex;
 public:
 	static ModbusDriverTCP *Instance();
 	ModbusMessageTCP* SendModbusMessage(SocketStruct* socket, ModbusMessageTCP* modbusMessage);

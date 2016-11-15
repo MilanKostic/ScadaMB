@@ -40,10 +40,18 @@ ModbusDriverTCP * ModbusDriverTCP::Instance()
 
 ModbusMessageTCP* ModbusDriverTCP::SendModbusMessage(SocketStruct* soc, ModbusMessageTCP* modbusMessage)
 {
+	this->sendMutex.lock();
 	char* msg = modbusMessage->Serialize();
 	bool success = Socket::Instance()->Send(soc, msg, modbusMessage->GetMessageLength());
 	delete[] msg;
-	return this->Receive(soc);
+	ModbusMessageTCP* ret = NULL;
+
+	if (success)
+	{
+		ret = this->Receive(soc);
+	}
+	this->sendMutex.unlock();
+	return ret;
 }
 
 ModbusMessageTCP* ModbusDriverTCP::Receive(SocketStruct* socket)

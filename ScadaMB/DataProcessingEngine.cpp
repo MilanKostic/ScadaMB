@@ -26,6 +26,7 @@ void DataProcessingEngine::Process()
 				HostPoll* first = rtu.second->front();
 				rtu.second->pop_front();
 				first->GetResponse()->Crunch(rtu.first, first->GetRequest());
+				delete first;
 			}
 			lock.unlock();
 		}

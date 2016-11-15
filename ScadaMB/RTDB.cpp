@@ -13,7 +13,7 @@ RTDB * RTDB::Instance()
 char* RTDB::GetCurrentValues()
 {
 	string answer;
-	answer += "Current values: \n";
+	answer += "Current values: \n\n";
 	for each (pair<int, RTU*> rtu in listOfRemotes)
 	{
 		answer += "RTU " + to_string(rtu.second->GetID());
