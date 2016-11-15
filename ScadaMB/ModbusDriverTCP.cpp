@@ -38,12 +38,19 @@ ModbusDriverTCP * ModbusDriverTCP::Instance()
 	return instance;
 }
 
+mutex* ModbusDriverTCP::GetMutex()
+{
+	return &mLocl;
+}
+
 ModbusMessageTCP* ModbusDriverTCP::SendModbusMessage(SocketStruct* soc, ModbusMessageTCP* modbusMessage)
 {
+	GetMutex()->lock();
 	char* msg = modbusMessage->Serialize();
 	bool success = Socket::Instance()->Send(soc, msg, modbusMessage->GetMessageLength());
 	delete[] msg;
 	return this->Receive(soc);
+
 }
 
 ModbusMessageTCP* ModbusDriverTCP::Receive(SocketStruct* socket)
@@ -86,5 +93,6 @@ ModbusMessageTCP* ModbusDriverTCP::Receive(SocketStruct* socket)
 
 	}
 	socket->lock.unlock();
+	GetMutex()->unlock();
 	return this->ProcessAccessBuffer(accessBuffer);
 }
