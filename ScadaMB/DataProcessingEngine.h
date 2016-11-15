@@ -12,7 +12,7 @@ using namespace std;
 class DataProcessingEngine
 {
 private:
-	map<int, list<HostPoll*>> remotes; //key = rtu id, value = HostPoll
+	map<int, list<HostPoll*>*> remotes; //key = rtu id, value = HostPoll
 	mutex lock;
 public:
 	DataProcessingEngine();

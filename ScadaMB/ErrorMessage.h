@@ -9,7 +9,7 @@ enum ErrorMessageCode
 	CODE_04 = 0x04
 };
 
-class ErrorMessage : ModbusMessageTCP
+class ErrorMessage : public ModbusMessageTCP
 {
 private:
 	ErrorMessageCode errorCode;

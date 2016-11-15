@@ -28,7 +28,7 @@ ReadHoldingRegistersMessage::ReadHoldingRegistersMessage(char* bytes) : ModbusMe
 
 char* ReadHoldingRegistersMessage::Serialize()
 {
-	char* retValue = new char(this->messageLength);
+	char* retValue = new char[this->messageLength];
 	
 	*(Header*)&retValue[0] = this->header;
 	retValue[headerLength] = this->functionCode;

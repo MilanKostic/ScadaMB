@@ -32,7 +32,7 @@ void PollEngine::Poll()
 		}
 		for each(std::pair<unsigned short, DigitalDevice*> digitalDevice in rtu.second->GetDigitalDevices())
 		{
-			ModbusMessageTCP* reqMessage = digitalDevice.second->IsReadOnly() ? new ReadDescreteInputsMessage(digitalDevice.second->GetInAddresses()[0], 2) : new ReadCoilsMessage(digitalDevice.second->GetId(), 2);
+			ModbusMessageTCP* reqMessage = new ReadDescreteInputsMessage(digitalDevice.second->GetInAddresses()[0], 2);
 			ModbusMessageTCP* respMessage = ModbusDriverTCP::Instance()->SendModbusMessage(rtu.second->GetSocket(), reqMessage);
 			this->dataProcessingEngine.AddHostPoll(rtu.second->GetID(), new HostPoll(reqMessage, respMessage));
 		}

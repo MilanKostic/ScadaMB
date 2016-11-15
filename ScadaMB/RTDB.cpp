@@ -27,7 +27,7 @@ char* RTDB::GetCurrentValues()
 		}
 		for each (pair<unsigned int, DigitalDevice*> dev in rtu.second->GetDigitalDevices())
 		{
-			answer += "\t" + dev.second->GetName() + " " + to_string(dev.second->GetPointState()) + "\n";
+			answer += "\t" + dev.second->GetName() + " " + to_string(dev.second->GetPointState() == PointState::On) + "\n";
 		}
 	}
 	char * writable = new char[answer.size() + 1];

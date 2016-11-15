@@ -27,7 +27,7 @@ ReadCoilsMessage::ReadCoilsMessage(char* bytes) : ModbusMessageTCP(bytes)
 
 char* ReadCoilsMessage::Serialize()
 {
-	char* retValue = new char(messageLength);
+	char* retValue = new char[messageLength];
 
 	*(Header*)&retValue[0] = header;
 	retValue[headerLength] = functionCode;

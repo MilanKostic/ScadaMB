@@ -26,7 +26,7 @@ WriteSingleCoilMessage::WriteSingleCoilMessage(unsigned short outputAddress, Poi
 
 char * WriteSingleCoilMessage::Serialize()
 {
-	char* retValue = new char(this->messageLength);
+	char* retValue = new char[this->messageLength];
 	
 	*(Header*)&retValue[0] = this->header;
 	retValue[headerLength] = this->functionCode;

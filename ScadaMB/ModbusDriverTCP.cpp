@@ -5,6 +5,7 @@
 #include "ReadInputRegistersMessage.h"
 #include "WriteSingleCoilMessage.h"
 #include "WriteSingleRegisterMessage.h"
+#include "ErrorMessage.h"
 
 ModbusDriverTCP * ModbusDriverTCP::instance = NULL;
 
@@ -24,9 +25,9 @@ ModbusMessageTCP* ModbusDriverTCP::ProcessAccessBuffer(char* buffer)
 			return new WriteSingleCoilMessage(buffer);
 		case ModbusMessageTypes::WRITE_SINGLE_REGISTER:
 			return new WriteSingleRegisterMessage(buffer);
+		default:
+			return new ErrorMessage(buffer);
 	}
-
-	return new ModbusMessageTCP();
 }
 
 ModbusDriverTCP * ModbusDriverTCP::Instance()
@@ -39,8 +40,9 @@ ModbusDriverTCP * ModbusDriverTCP::Instance()
 
 ModbusMessageTCP* ModbusDriverTCP::SendModbusMessage(SOCKET socket, ModbusMessageTCP* modbusMessage)
 {
-	bool success = Socket::Instance()->Send(socket, modbusMessage->Serialize(), modbusMessage->GetMessageLength());
-	
+	char* msg = modbusMessage->Serialize();
+	bool success = Socket::Instance()->Send(socket, msg, modbusMessage->GetMessageLength());
+	delete[] msg;
 	return this->Receive(socket);
 }
 
