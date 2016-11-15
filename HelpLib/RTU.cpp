@@ -42,6 +42,15 @@ void RTU::AddDigitalDevice(DigitalDevice * digitalDevice)
 	this->digitalDevices.insert(std::pair<unsigned short, DigitalDevice*>(digitalDevice->GetId(), digitalDevice));
 }
 
+double RTU::GetAnalogOutputValue(unsigned short address)
+{
+	for each(std::pair<unsigned short, AnalogOutput*> ao in this->analogOutputList)
+	{
+		if (ao.second->GetAddress() == address) return ao.second->GetRaw();
+	}
+	return 0.0;
+}
+
 SOCKET RTU::GetSocket()
 {
 	return this->socket;

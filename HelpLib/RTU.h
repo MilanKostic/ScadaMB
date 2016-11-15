@@ -43,6 +43,8 @@ public:
 	void AddAnalogInput(AnalogInput* analogInput);
 	void AddAnalogOutput(AnalogOutput* analogOutput);
 	void AddDigitalDevice(DigitalDevice* digitalDevice);
+	
+	double GetAnalogOutputValue(unsigned short address);
 
 	SOCKET GetSocket();
 };

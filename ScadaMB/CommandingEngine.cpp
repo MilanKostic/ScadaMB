@@ -39,15 +39,15 @@ void IncrementForOneRTU(RTU *rtu) {
 	while (true) {
 		if (rtu->GetDigitalDevices().find(PointAddress::ventilVode)->second->GetPointState() == PointState::On) {
 			ModbusDriverTCP::Instance()->SendModbusMessage(rtu->GetSocket()/*Soket od RTU-a*/,
-				new WriteSingleRegisterMessage(PointAddress::kolicinaVodeOut, 100));
+				new WriteSingleRegisterMessage(PointAddress::kolicinaVodeOut, rtu->GetAnalogOutputValue(PointAddress::kolicinaVodeOut) + 100));
 		}
 		if (rtu->GetDigitalDevices().find(PointAddress::ventilPeska)->second->GetPointState() == PointState::On) {
 			ModbusDriverTCP::Instance()->SendModbusMessage(rtu->GetSocket()/*Soket od RTU-a*/,
-				new WriteSingleRegisterMessage(PointAddress::kolicinaPijeskaOut, 100));
+				new WriteSingleRegisterMessage(PointAddress::kolicinaPijeskaOut, rtu->GetAnalogOutputValue(PointAddress::kolicinaPijeskaOut) + 100));
 		}
 		if (rtu->GetDigitalDevices().find(PointAddress::ventilSljunka)->second->GetPointState() == PointState::On) {
 			ModbusDriverTCP::Instance()->SendModbusMessage(rtu->GetSocket()/*Soket od RTU-a*/,
-				new WriteSingleRegisterMessage(PointAddress::kolicinaSljunkaOut, 100));
+				new WriteSingleRegisterMessage(PointAddress::kolicinaSljunkaOut, rtu->GetAnalogOutputValue(PointAddress::kolicinaSljunkaOut) + 100));
 		}
 		Sleep(1000);
 	}

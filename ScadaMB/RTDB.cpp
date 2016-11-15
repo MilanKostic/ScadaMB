@@ -21,7 +21,7 @@ char* RTDB::GetCurrentValues()
 		{
 			answer += "\t" + analogOut.second->GetName() + " " + to_string(analogOut.second->GetEgu()) + "\n";
 		}
-		for each (pair<unsigned int, AnalogInput*> analogIn in rtu.second->GetAnalogOutoputList())
+		for each (pair<unsigned int, AnalogInput*> analogIn in rtu.second->GetAnalogInputList())
 		{
 			answer += "\t" + analogIn.second->GetName() + " " + to_string(analogIn.second->GetEgu()) + "\n";
 		}
