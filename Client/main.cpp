@@ -3,12 +3,13 @@
 
 using namespace std;
 
-void ShowMonitoringValues(SOCKET serverSocket, char* sendBuffer);
-void ServeCommandMenu(SOCKET serverSocket, char* sendBuffer);
+void ShowMonitoringValues(SocketStruct* serverSocket, char* sendBuffer);
+void ServeCommandMenu(SocketStruct* serverSocket, char* sendBuffer);
 
 int main() {
 
-	SOCKET serverSocket = Socket::Instance()->Connect("127.0.0.1", 9000);
+	SocketStruct serverSocket;
+	serverSocket.socket = Socket::Instance()->Connect("127.0.0.1", 9000);
 	char *sendBuffer = (char*)malloc(6);
 
 	int menuValue;
@@ -17,25 +18,24 @@ int main() {
 		cout << "2. Izmjena vrijednosti velicina\n";
 		cout << "0. Izlaz\n";
 		cin >> menuValue;
-		system("cls");
 
 		switch (menuValue) {
-		case 1: { ShowMonitoringValues(serverSocket, sendBuffer); break; }
-		case 2: { ServeCommandMenu(serverSocket, sendBuffer); break; }
+		case 1: { ShowMonitoringValues(&serverSocket, sendBuffer); break; }
+		case 2: { ServeCommandMenu(&serverSocket, sendBuffer); break; }
 		}
-		
+
 	} while (menuValue != 0);
 	free(sendBuffer);
 }
 
-void ShowMonitoringValues(SOCKET serverSocket, char* sendBuffer) {
+void ShowMonitoringValues(SocketStruct* serverSocket, char* sendBuffer) {
 	sendBuffer[0] = 'r';
 	
 	char* accessBuffer = new char[1024];
 	Socket::Instance()->Send(serverSocket, sendBuffer, 6);
 	while (true)
 	{
-		int iResultSelect = Socket::Instance()->Select(serverSocket, 0);
+		int iResultSelect = Socket::Instance()->Select(serverSocket->socket, 0);
 		if (iResultSelect == SOCKET_ERROR)
 		{
 			fprintf(stderr, "select failed with error: %ld\n", WSAGetLastError());
@@ -47,7 +47,7 @@ void ShowMonitoringValues(SOCKET serverSocket, char* sendBuffer) {
 			continue;
 		}
 		
-		int iResult = recv(serverSocket, accessBuffer, 1024, 0);
+		int iResult = recv(serverSocket->socket, accessBuffer, 1024, 0);
 		
 		if (iResult == SOCKET_ERROR) {
 			printf("Error in receive: %d", WSAGetLastError());
@@ -61,19 +61,18 @@ void ShowMonitoringValues(SOCKET serverSocket, char* sendBuffer) {
 		if (iResult < 1024) {
 			char *writeBuffer = new char[iResult];
 			memcpy(writeBuffer, accessBuffer, iResult);
-			cout << writeBuffer << endl;
+			cout << writeBuffer;
 			break;
 		}
 		else {
-			cout << accessBuffer << endl;
+			cout << accessBuffer;
 		}
 		
 	}
 	
 }
 
-void  ServeCommandMenu(SOCKET serverSocket, char* sendBuffer) {
-	
+void  ServeCommandMenu(SocketStruct* serverSocket, char* sendBuffer) {
 	sendBuffer[0] = 'c';
 	char menuValue;
 	int value;
@@ -81,7 +80,7 @@ void  ServeCommandMenu(SOCKET serverSocket, char* sendBuffer) {
 		cout << "1. Dozvola praznjenja mjesalice (1/0)\n";
 		cout << "0. Izlaz\n";
 		cin >> menuValue;
-		
+
 		if (menuValue != '0') {
 			cout << "Vrednost: ";
 			cin >> value;
@@ -89,6 +88,5 @@ void  ServeCommandMenu(SOCKET serverSocket, char* sendBuffer) {
 			*(int*)&sendBuffer[2] = value;
 			Socket::Instance()->Send(serverSocket, sendBuffer, 6);
 		}
-		system("cls");
 	} while (menuValue != '0');
 }

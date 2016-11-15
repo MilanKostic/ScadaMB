@@ -38,23 +38,24 @@ ModbusDriverTCP * ModbusDriverTCP::Instance()
 	return instance;
 }
 
-ModbusMessageTCP* ModbusDriverTCP::SendModbusMessage(SOCKET socket, ModbusMessageTCP* modbusMessage)
+ModbusMessageTCP* ModbusDriverTCP::SendModbusMessage(SocketStruct* soc, ModbusMessageTCP* modbusMessage)
 {
 	char* msg = modbusMessage->Serialize();
-	bool success = Socket::Instance()->Send(socket, msg, modbusMessage->GetMessageLength());
+	bool success = Socket::Instance()->Send(soc, msg, modbusMessage->GetMessageLength());
 	delete[] msg;
-	return this->Receive(socket);
+	return this->Receive(soc);
 }
 
-ModbusMessageTCP* ModbusDriverTCP::Receive(SOCKET socket)
+ModbusMessageTCP* ModbusDriverTCP::Receive(SocketStruct* socket)
 {
 	int index = 0;
 	int messageLength = 0;
 	int dataLengthCount = -1;
 
+	socket->lock.lock();
 	while (true) {
 
-		int iResultSelect = Socket::Instance()->Select(socket, 0);
+		int iResultSelect = Socket::Instance()->Select(socket->socket, 0);
 		if (iResultSelect == SOCKET_ERROR)
 		{
 			continue;
@@ -62,11 +63,11 @@ ModbusMessageTCP* ModbusDriverTCP::Receive(SOCKET socket)
 
 		if (iResultSelect == 0)
 		{
-			Sleep(20);
+			this_thread::sleep_for(chrono::milliseconds(20));
 			continue;
 		}
 
-		int iResult = recv(socket, &accessBuffer[index], accessBufferLength - index, 0);
+		int iResult = recv(socket->socket, &accessBuffer[index], accessBufferLength - index, 0);
 		
 		if (iResult == SOCKET_ERROR) break;
 		if (iResult == 0) break;
@@ -84,5 +85,6 @@ ModbusMessageTCP* ModbusDriverTCP::Receive(SOCKET socket)
 		if (dataLengthCount == 0) break;
 
 	}
+	socket->lock.unlock();
 	return this->ProcessAccessBuffer(accessBuffer);
 }

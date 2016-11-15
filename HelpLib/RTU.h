@@ -18,7 +18,7 @@ private:
 	string transportProtocol;
 	string ipAddress;
 	int port;
-	SOCKET socket;
+	SocketStruct socket;
 
 	map<unsigned short, AnalogInput*> analogInputList;
 	map<unsigned short, AnalogOutput*> analogOutputList;
@@ -46,5 +46,5 @@ public:
 	
 	double GetAnalogOutputValue(unsigned short address);
 
-	SOCKET GetSocket();
+	SocketStruct* GetSocket();
 };

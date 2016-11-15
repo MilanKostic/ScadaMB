@@ -10,7 +10,7 @@ RTU::RTU(int id, string industrialProtocol, string transportProtocol, string ipA
 	char* ip = new char[this->ipAddress.size() + 1];
 	memcpy(ip, this->ipAddress.c_str(), this->ipAddress.size());
 	ip[this->ipAddress.size()] = '\0';
-	socket = Socket::Instance()->Connect(ip, this->port);
+	socket.socket = Socket::Instance()->Connect(ip, this->port);
 }
 
 map<unsigned short, AnalogInput*> RTU::GetAnalogInputList() {
@@ -51,9 +51,9 @@ double RTU::GetAnalogOutputValue(unsigned short address)
 	return 0.0;
 }
 
-SOCKET RTU::GetSocket()
+SocketStruct* RTU::GetSocket()
 {
-	return this->socket;
+	return &socket;
 }
 
 void RTU::SetIndustrialProtocol(string protocol)

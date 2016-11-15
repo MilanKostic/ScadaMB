@@ -11,8 +11,8 @@ private:
 public:
 	static ClientHandler* Instance();
 	void ServerThread(char* port);
-	void Receive(SOCKET socket);
+	void Receive(SocketStruct* socket);
 };
 
-void ReceiveFunction(SOCKET socket);
+void ReceiveFunction(SocketStruct* socket);
 
