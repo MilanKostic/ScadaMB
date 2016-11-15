@@ -36,6 +36,9 @@
     <ClInclude Include="PointStates.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Alarm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Socket.cpp">
@@ -51,6 +54,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DigitalDevice.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Alarm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

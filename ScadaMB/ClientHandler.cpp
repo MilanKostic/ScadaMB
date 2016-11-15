@@ -5,6 +5,34 @@ void ReceiveFunction(SocketStruct* socket) {
 	ClientHandler::Instance()->Receive(socket);
 }
 
+void AlarmListeningThread(list<SocketStruct*> acceptedSocketList)
+{
+	while (true) {
+		for each (pair<int, list<Alarm*>> rtuPair in RTDB::Instance()->GetAlarmMap())
+		{
+			for each (Alarm* alarm in rtuPair.second)
+			{
+				if (!alarm->IsAccepted())
+				{
+					for each (SocketStruct *soc in acceptedSocketList)
+					{
+						Socket::Instance()->Select(soc->socket, 1);
+						char * writable = new char[alarm->GetMessageW().length() + 1];
+						copy(alarm->GetMessageW().begin(), alarm->GetMessageW().end(), writable);
+						writable[alarm->GetMessageW().size()] = '\0';
+						Socket::Instance()->Send(soc, writable, strlen(writable) + 1);
+						alarm->SetAcception(true);
+					}
+				}
+				else 
+				{
+					//obrisati alarm?
+				}
+			}
+		}
+	}
+}
+
 
 
 ClientHandler* ClientHandler::instance = NULL;
@@ -112,6 +140,7 @@ void ClientHandler::ServerThread(char * port)
 		}
 
 		SOCKET acceptedSocket = accept(listenSocket, NULL, NULL);
+		
 
 		unsigned long int nonBlockingMode = 1;
 		iResult = ioctlsocket(acceptedSocket, FIONBIO, &nonBlockingMode);
@@ -132,6 +161,9 @@ void ClientHandler::ServerThread(char * port)
 
 		SocketStruct sc;
 		sc.socket = acceptedSocket;
+
+		acceptedSocketList.push_back(&sc);
+
 		std::thread(ReceiveFunction, &sc).detach();
 		// da li ovdje raditi smijestanje u listu tredova
 	}
@@ -177,7 +209,17 @@ void ClientHandler::Receive(SocketStruct* socket) {
 			CommandingEngine::Instance()->CreateCommand(accessBuffer);
 		}
 	}
-	
+	acceptedSocketList.remove(socket);
 	closesocket(socket->socket);
+}
+
+void ClientHandler::AlarmListening()
+{
+	std::thread(AlarmListeningThread, acceptedSocketList).detach();
+}
+
+list<SocketStruct*> ClientHandler::GetAcceptedSocketList()
+{
+	return acceptedSocketList;
 }
 

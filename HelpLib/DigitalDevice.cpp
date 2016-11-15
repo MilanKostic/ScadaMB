@@ -25,6 +25,7 @@ DigitalDevice::DigitalDevice(unsigned short id, string name, bool readOnly, unsi
 	this->outAddress = outAddress;
 	this->status = PointStatus::OnScan;
 	this->state = PointState::Off;
+	this->command = PointState::Off;
 }
 
 void DigitalDevice::SetCommand(PointState value)

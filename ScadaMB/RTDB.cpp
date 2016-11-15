@@ -51,3 +51,15 @@ RTU * RTDB::GetRTU(int id)
 {
 	return this->listOfRemotes[id];
 }
+
+map<int, list<Alarm*>> RTDB::GetAlarmMap()
+{
+	return alarmList;
+}
+
+void RTDB::AddAlarm(Alarm *newAlarm)
+{
+	//koji je id od device-a
+
+	alarmList.find(newAlarm->GetRTU()->GetID())->second.push_back(newAlarm);
+}
