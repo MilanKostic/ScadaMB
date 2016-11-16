@@ -96,7 +96,11 @@ void ReadCoilsMessage::Crunch(int rtuId, ModbusMessageTCP* req)
 				//Generisi alarm
 				RTU *rtu = RTDB::Instance()->GetRemotes().find(PointAddress::rtuId)->second;
 				DigitalDevice *dev = rtu->GetDigitalDevices().find(PointAddress::dozvolaPraznjenjaMjesalice)->second;
-				RTDB::Instance()->AddAlarm(new Alarm(rtu, dev));
+				RTDB::Instance()->AddAlarm(new Alarm(rtu, dev, -1));
+			}
+			else if(device.second->GetPointState() == device.second->GetCommand() && device.second->GetId() == PointAddress::dozvolaPraznjenjaMjesalice)
+			{
+				RTDB::Instance()->RemoveAlarm(device.second);
 			}
 			break;
 		}

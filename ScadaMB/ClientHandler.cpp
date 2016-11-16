@@ -12,26 +12,26 @@ void AlarmListeningThread(list<SocketStruct*>* acceptedSocketList)
 		{
 			for each (Alarm* alarm in rtuPair.second)
 			{
-				if (!alarm->IsAccepted())
+				if (!alarm->IsInhibition() && !alarm->GetIsSend())
 				{
+					std::this_thread::sleep_for(chrono::microseconds(alarm->GetSleepTime()));
 					for each (SocketStruct *soc in *acceptedSocketList)
 					{
-						Socket::Instance()->Select(soc->socket, 1);
-						char * writable = new char[alarm->GetAlarmMessage().length() + 1];
-						memcpy(writable, alarm->GetAlarmMessage().c_str(), alarm->GetAlarmMessage().length());
-
-						//copy(alarm->GetAlarmMessage().begin(), alarm->GetAlarmMessage().end(), writable);
-						writable[alarm->GetAlarmMessage().size()] = '\0';
-						Socket::Instance()->Send(soc, writable, strlen(writable) + 1);
-						alarm->SetAcception(true);
+						int msgLen = alarm->GetAlarmMessage().length() + 6;
+						char * writable = new char[msgLen];
+						writable[0] = 'A';
+						*(int*)&writable[1] = alarm->GetAlarmId();
+						memcpy(&writable[5], alarm->GetAlarmMessage().c_str(), alarm->GetAlarmMessage().length());
+						writable[msgLen - 1] = '\0';
+						Socket::Instance()->Send(soc, writable, msgLen);
+						delete[] writable;
+						alarm->SetIsSend(true);
+						//alarm->setSleepTime(5000);
 					}
-				}
-				else 
-				{
-					//obrisati alarm?
 				}
 			}
 		}
+
 	}
 }
 
@@ -166,7 +166,7 @@ void ClientHandler::ServerThread(char * port)
 
 		acceptedSocketList.push_back(&sc);
 
-		std::thread(ReceiveFunction, &sc).detach();
+		std::thread(&ReceiveFunction, &sc).detach();
 		// da li ovdje raditi smijestanje u listu tredova
 	}
 	closesocket(listenSocket);
@@ -189,7 +189,9 @@ void ClientHandler::Receive(SocketStruct* socket) {
 			Sleep(20);
 			continue;
 		}
+		socket->lock.lock();
 		int iResult = recv(socket->socket, accessBuffer, 6, 0);
+		socket->lock.unlock();
 
 		if (iResult == SOCKET_ERROR) {
 			printf("Error in receive: %d", WSAGetLastError());
@@ -205,6 +207,10 @@ void ClientHandler::Receive(SocketStruct* socket) {
 		{
 			char* retVal = RTDB::Instance()->GetCurrentValues();
 			Socket::Instance()->Send(socket, retVal, strlen(retVal)+1);
+		}
+		else if (accessBuffer[0] == 'A')
+		{
+			RTDB::Instance()->ProcessAlarm(*(int*)&accessBuffer[1], accessBuffer[5]);
 		}
 		else
 		{

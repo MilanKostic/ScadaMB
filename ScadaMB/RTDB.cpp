@@ -4,6 +4,7 @@ RTDB * RTDB::instance = NULL;
 
 RTDB::RTDB()
 {
+	this->alarmCount = 0;
 }
 
 RTDB * RTDB::Instance()
@@ -63,6 +64,7 @@ map<int, list<Alarm*>> RTDB::GetAlarmMap()
 
 void RTDB::AddAlarm(Alarm *newAlarm)
 {
+	alarmMutex.lock();
 	if (alarmList.size() == 0)
 	{
 		for each(std::pair<int, RTU*> rtu in this->listOfRemotes)
@@ -70,5 +72,63 @@ void RTDB::AddAlarm(Alarm *newAlarm)
 			this->alarmList.insert(std::pair<int, list<Alarm*>>(rtu.first, list<Alarm*>()));
 		}
 	}
-	alarmList.find(newAlarm->GetRTU()->GetID())->second.push_back(newAlarm);
+	bool flag = false;
+	for each(Alarm* a in alarmList.find(newAlarm->GetRTU()->GetID())->second)
+	{
+		if (a->GetDigitalDevice()->GetId() == newAlarm->GetDigitalDevice()->GetId())
+		{
+			flag = true;
+			break;
+		}
+	}
+	if (!flag)
+	{
+		newAlarm->SetId(++this->alarmCount);
+		alarmList.find(newAlarm->GetRTU()->GetID())->second.push_back(newAlarm);
+	}
+	alarmMutex.unlock();
+}
+
+void RTDB::ProcessAlarm(int alarmId, char c)
+{
+	for each(std::pair<int, list<Alarm*>> rtu in alarmList)
+	{
+		for each(Alarm* a in rtu.second)
+		{
+			if (a->GetAlarmId() == alarmId)
+			{
+				if (c == 'z')
+				{
+					a->SetInhibition(true);
+				}
+				else if (c == 'p')
+				{
+					a->SetAcception(true);
+				}
+			}
+		}
+	}
+}
+
+void RTDB::RemoveAlarm(DigitalDevice * device)
+{
+	alarmMutex.lock();
+	Alarm* del = NULL;
+	for each(std::pair<int, list<Alarm*>> rtu in alarmList)
+	{
+		for each(Alarm* a in rtu.second)
+		{
+			if (a->GetDigitalDevice()->GetId() == device->GetId())
+			{
+				del = a;
+				break;
+			}
+		}
+		if (del != NULL)
+		{
+			if(del->IsAccepted() || del->IsInhibition()) rtu.second.remove(del);
+			break;
+		}
+	}
+	alarmMutex.unlock();
 }

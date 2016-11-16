@@ -3,31 +3,53 @@
 
 using namespace std;
 
+typedef struct
+{
+	SocketStruct* socket;
+	bool inputAlarm;
+	char alarmBuffer[6];
+}ThreadParams;
+
 void ShowMonitoringValues(SocketStruct* serverSocket, char* sendBuffer);
 void ServeCommandMenu(SocketStruct* serverSocket, char* sendBuffer);
-void ListenForAlarms(SocketStruct* serverSocket);
+void ListenForAlarms(ThreadParams* serverSocket);
 
 int main() {
 
 	SocketStruct serverSocket;
 	serverSocket.socket = Socket::Instance()->Connect("127.0.0.1", 9000);
 
-	std::thread(ListenForAlarms, &serverSocket).detach();
+	ThreadParams param;
+	param.socket = &serverSocket;
+	param.inputAlarm = false;
+
+	std::thread(ListenForAlarms, &param).detach();
 
 	char *sendBuffer = (char*)malloc(6);
-	int menuValue;
+	char menuValue;
 	do {
 		cout << endl;
 		cout << "1. Prikaz trenutnih velicina\n";
 		cout << "2. Izmjena vrijednosti velicina\n";
 		cout << "0. Izlaz\n";
+		
 		cin >> menuValue;
 
+		if (param.inputAlarm)
+		{
+			param.alarmBuffer[5] = menuValue;
+			Socket::Instance()->Send(param.socket, param.alarmBuffer, 6);
+			param.inputAlarm = false;
+			system("cls");
+			continue;
+		}
+		
 		system("cls");
 
-		switch (menuValue) {
-		case 1: { ShowMonitoringValues(&serverSocket, sendBuffer); break; }
-		case 2: { ServeCommandMenu(&serverSocket, sendBuffer); break; }
+		switch (menuValue) 
+		{
+			case '1': { ShowMonitoringValues(&serverSocket, sendBuffer); break; }
+			case '2': { ServeCommandMenu(&serverSocket, sendBuffer); break; }
 		}
 		
 	} while (menuValue != 0);
@@ -37,46 +59,8 @@ int main() {
 void ShowMonitoringValues(SocketStruct* serverSocket, char* sendBuffer) {
 	sendBuffer[0] = 'r';
 	
-	//char* accessBuffer = new char[1024];
-
 	Socket::Instance()->Send(serverSocket, sendBuffer, 6);
-	/*while (true)
-	{
-		int iResultSelect = Socket::Instance()->Select(serverSocket->socket, 0);
-		if (iResultSelect == SOCKET_ERROR)
-		{
-			fprintf(stderr, "select failed with error: %ld\n", WSAGetLastError());
-			continue;
-		}
-		if (iResultSelect == 0)
-		{
-			Sleep(20);
-			continue;
-		}
 		
-		int iResult = recv(serverSocket->socket, accessBuffer, 1024, 0);
-		
-		if (iResult == SOCKET_ERROR) {
-			printf("Error in receive: %d", WSAGetLastError());
-			break;
-		}
-		if (iResult == 0) {
-			printf("Connection is closed\n");
-			break; // Zatvorena konekcija
-		}
-
-		if (iResult < 1024) {
-			char *writeBuffer = new char[iResult];
-			memcpy(writeBuffer, accessBuffer, iResult);
-			cout << writeBuffer;
-			break;
-		}
-		else {
-			cout << accessBuffer;
-		}
-		
-	}*/
-	
 }
 
 void  ServeCommandMenu(SocketStruct* serverSocket, char* sendBuffer) {
@@ -100,11 +84,11 @@ void  ServeCommandMenu(SocketStruct* serverSocket, char* sendBuffer) {
 	} while (menuValue != '0');
 }
 
-void ListenForAlarms(SocketStruct* serverSocket) {
+void ListenForAlarms(ThreadParams* params) {
 	char* accessBuffer = new char[1024];
 	while (true)
 	{
-		int iResultSelect = Socket::Instance()->Select(serverSocket->socket, 0);
+		int iResultSelect = Socket::Instance()->Select(params->socket->socket, 0);
 		if (iResultSelect == SOCKET_ERROR)
 		{
 			fprintf(stderr, "select failed with error: %ld\n", WSAGetLastError());
@@ -116,7 +100,9 @@ void ListenForAlarms(SocketStruct* serverSocket) {
 			continue;
 		}
 
-		int iResult = recv(serverSocket->socket, accessBuffer, 1024, 0);
+		params->socket->lock.lock();
+		int iResult = recv(params->socket->socket, accessBuffer, 1024, 0);
+		params->socket->lock.unlock();
 
 		if (iResult == SOCKET_ERROR) {
 			printf("Error in receive: %d", WSAGetLastError());
@@ -126,19 +112,39 @@ void ListenForAlarms(SocketStruct* serverSocket) {
 			printf("Connection is closed\n");
 			break; // Zatvorena konekcija
 		}
+
 		HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 		int k = 7;
-		if (accessBuffer[0] == 'M') k = 12;
+		//int pom = 0;
+		int coutInc = 0;
+		if (accessBuffer[0] == 'A')
+		{
+			coutInc = 5;
+			k = 12;
+		}
 		SetConsoleTextAttribute(hConsole, k);
+		
+		cout << &accessBuffer[coutInc];
 
-		if (iResult < 1024) {
-			char *writeBuffer = new char[iResult];
-			memcpy(writeBuffer, accessBuffer, iResult);
-			cout << writeBuffer;
+		if (accessBuffer[0] == 'A')
+		{
+			//char* alarmResp = new char[6];
+			params->alarmBuffer[0] = 'A';
+			memcpy(&params->alarmBuffer[1], &accessBuffer[1], 4);
+			SetConsoleTextAttribute(hConsole, 7);
+			params->inputAlarm = true;
+			cout << "Zabrani alarm(Unesite z) Potvrdi alarm(Unesite p):";
+			/*char c;
+			while ((c = getchar()) != '\n')
+			{
+				alarmResp[5] = c;
+			}*/
+			//Socket::Instance()->Send(serverSocket, alarmResp, 6);
+			//delete[] alarmResp;
+			//system("cls");
+			
 		}
-		else {
-			cout << accessBuffer;
-		}
+		SetConsoleTextAttribute(hConsole, 7);
 
 	}
 }
