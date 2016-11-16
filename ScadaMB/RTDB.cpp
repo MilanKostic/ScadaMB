@@ -63,7 +63,6 @@ map<int, list<Alarm*>> RTDB::GetAlarmMap()
 
 void RTDB::AddAlarm(Alarm *newAlarm)
 {
-	//koji je id od device-a
 	if (alarmList.size() == 0)
 	{
 		for each(std::pair<int, RTU*> rtu in this->listOfRemotes)
