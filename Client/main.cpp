@@ -115,7 +115,6 @@ void ListenForAlarms(ThreadParams* params) {
 
 		HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 		int k = 7;
-		//int pom = 0;
 		int coutInc = 0;
 		if (accessBuffer[0] == 'A')
 		{
@@ -128,21 +127,11 @@ void ListenForAlarms(ThreadParams* params) {
 
 		if (accessBuffer[0] == 'A')
 		{
-			//char* alarmResp = new char[6];
 			params->alarmBuffer[0] = 'A';
 			memcpy(&params->alarmBuffer[1], &accessBuffer[1], 4);
 			SetConsoleTextAttribute(hConsole, 7);
 			params->inputAlarm = true;
-			cout << "Zabrani alarm(Unesite z) Potvrdi alarm(Unesite p):";
-			/*char c;
-			while ((c = getchar()) != '\n')
-			{
-				alarmResp[5] = c;
-			}*/
-			//Socket::Instance()->Send(serverSocket, alarmResp, 6);
-			//delete[] alarmResp;
-			//system("cls");
-			
+			cout << "Zabrani alarm(Unesite z) Potvrdi alarm(Unesite p):";		
 		}
 		SetConsoleTextAttribute(hConsole, 7);
 

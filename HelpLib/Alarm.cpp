@@ -44,8 +44,9 @@ void Alarm::SetInhibition(bool value)
 
 void Alarm::SetAcception(bool value)
 {
-	sleepTime = 5000;
-	accepted = value;
+	this->sleepTime = 5000;
+	this->accepted = value;
+	//this->isSend = false;
 }
 
 int Alarm::GetSleepTime()
