@@ -45,6 +45,7 @@ public:
 	void AddDigitalDevice(DigitalDevice* digitalDevice);
 	
 	unsigned short GetIncrementValue(unsigned short address);
+	short GetDecrementValue(unsigned short address);
 
 	SocketStruct* GetSocket();
 };

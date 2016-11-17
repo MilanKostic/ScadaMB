@@ -20,7 +20,7 @@ WriteSingleCoilMessage::WriteSingleCoilMessage(unsigned short outputAddress, Poi
 	this->header.length = htons(6);
 	this->header.unitIdentifier = 0x01;
 	this->outputAddress = htons(outputAddress);
-	*(unsigned short*)this->outputValue = htons(outputValue);
+	*(unsigned short*)this->outputValue = htons(outputValue == PointState::Off ? 0x0000 : 0xff00);
 	this->messageLength = this->headerLength + 5;
 }
 

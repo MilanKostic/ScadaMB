@@ -10,13 +10,14 @@ public:
 	const static unsigned int kamionDetektovan = 10005;
 
 	const static unsigned int dozvolaPraznjenjaMjesalice = 6;
-	const static unsigned int stanjeMjesalice = 2;
+	const static unsigned int stanjeMjesalice = 2; // Netacan id ???
 
 	const static unsigned int kolicinaVodeOut = 40001;
 	const static unsigned int kolicinaPijeskaOut = 40002;
 	const static unsigned int kolicinaSljunkaOut = 40003;
 
 	const static unsigned int rtuId = 1;
+	const static unsigned int stanjeMjesaliceId = 7;
 
 
 };

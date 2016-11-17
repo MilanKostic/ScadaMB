@@ -84,8 +84,8 @@ void ReadCoilsMessage::Crunch(int rtuId, ModbusMessageTCP* req)
 		if (device.second->GetInAddresses()[0] == reqCoils->GetStartingAddress())
 		{
 			//unsigned short coilCount = reqCoils->GetQuantityOfCoils();
-			bool coil1 = this->GetBit(this->coilStatus[0], 1);
-			bool coil2 = this->GetBit(this->coilStatus[0], 2);
+			bool coil1 = this->GetBit(this->coilStatus[0], 0);
+			bool coil2 = this->GetBit(this->coilStatus[0], 1);
 			if (coil1 && coil2) device.second->SetState(PointState::Error);
 			else if (coil1 && !coil2) device.second->SetState(PointState::On);
 			else if (!coil1 && coil2) device.second->SetState(PointState::Off);
