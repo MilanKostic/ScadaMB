@@ -231,3 +231,14 @@ list<SocketStruct*> ClientHandler::GetAcceptedSocketList()
 	return acceptedSocketList;
 }
 
+void ClientHandler::SendDeleteAlarm(Alarm * a)
+{
+	char* delAlarm = new char[5];
+	delAlarm[0] = 'D';
+	*(int*)&delAlarm[1] = a->GetAlarmId();
+	for each(SocketStruct* socket in acceptedSocketList)
+	{
+		Socket::Instance()->Send(socket, delAlarm, 5);
+	}
+}
+

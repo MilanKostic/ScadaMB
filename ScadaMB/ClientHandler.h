@@ -15,6 +15,7 @@ public:
 	void Receive(SocketStruct* socket);
 	void AlarmListening();
 	list<SocketStruct*> GetAcceptedSocketList();
+	void SendDeleteAlarm(Alarm* a);
 };
 
 void ReceiveFunction(SocketStruct* socket);

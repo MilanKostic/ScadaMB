@@ -9,6 +9,8 @@ typedef struct
 	SocketStruct* socket;
 	bool inputAlarm;
 	char alarmBuffer[6];
+	int alarmColor;
+	char* alarmText;
 }ThreadParams;
 
 void ShowMonitoringValues(SocketStruct* serverSocket, char* sendBuffer);
@@ -23,6 +25,8 @@ int main() {
 	ThreadParams param;
 	param.socket = &serverSocket;
 	param.inputAlarm = false;
+	param.alarmText = NULL;
+	param.alarmColor = 7;
 
 	std::thread(ListenForAlarms, &param).detach();
 
@@ -30,6 +34,15 @@ int main() {
 	char menuValue;
 	do {
 		cout << endl;
+
+		if (param.alarmText != NULL && param.inputAlarm == false)
+		{
+			HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+			SetConsoleTextAttribute(hConsole, param.alarmColor);
+			cout << param.alarmText << endl;
+			SetConsoleTextAttribute(hConsole, 7);
+		}
+
 		cout << "1. Prikaz trenutnih velicina\n";
 		cout << "2. Izmjena vrijednosti velicina\n";
 		cout << "0. Izlaz\n";
@@ -132,6 +145,12 @@ void ListenForAlarms(ThreadParams* params) {
 		}
 		SetConsoleTextAttribute(hConsole, k);
 		
+		if (accessBuffer[0] == 'D')
+		{
+			delete[] params->alarmText;
+			params->alarmText = NULL;
+			continue;
+		}
 		cout << &accessBuffer[coutInc];
 
 		if (accessBuffer[0] == 'A')
@@ -140,7 +159,16 @@ void ListenForAlarms(ThreadParams* params) {
 			memcpy(&params->alarmBuffer[1], &accessBuffer[1], 4);
 			SetConsoleTextAttribute(hConsole, 7);
 			params->inputAlarm = true;
-			cout << "Zabrani alarm(Unesite z) Potvrdi alarm(Unesite p):";		
+
+			char* alarmPotvrdjen = "[Alarm je potvrdjen]\n\0";
+			int alarmTextLen = strlen(&accessBuffer[coutInc]) + strlen(alarmPotvrdjen) + 1;
+			params->alarmText = new char[alarmTextLen];
+			memcpy(params->alarmText, &accessBuffer[coutInc], strlen(&accessBuffer[coutInc]));
+			memcpy(&params->alarmText[strlen(&accessBuffer[coutInc])], alarmPotvrdjen, strlen(alarmPotvrdjen));
+			params->alarmText[alarmTextLen - 1] = '\0';
+			params->alarmColor = 10;
+			
+			cout << "Potvrdi alarm(Unesite p):";		
 		}
 		SetConsoleTextAttribute(hConsole, 7);
 

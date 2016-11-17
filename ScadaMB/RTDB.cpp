@@ -1,4 +1,5 @@
 #include "RTDB.h"
+#include "ClientHandler.h"
 
 RTDB * RTDB::instance = NULL;
 
@@ -129,7 +130,8 @@ void RTDB::RemoveAlarm(DigitalDevice * device)
 			if (del->IsAccepted() || del->IsInhibition())
 			{
 				rtu.second->remove(del);
-				delete del;
+				ClientHandler::Instance()->SendDeleteAlarm(del);
+			//	delete del;
 			}
 			break;
 		}
