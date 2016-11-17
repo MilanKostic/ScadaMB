@@ -8,9 +8,9 @@ void ReceiveFunction(SocketStruct* socket) {
 void AlarmListeningThread(list<SocketStruct*>* acceptedSocketList)
 {
 	while (true) {
-		for each (pair<int, list<Alarm*>> rtuPair in RTDB::Instance()->GetAlarmMap())
+		for each (pair<int, list<Alarm*>*> rtuPair in RTDB::Instance()->GetAlarmMap())
 		{
-			for each (Alarm* alarm in rtuPair.second)
+			for each (Alarm* alarm in *rtuPair.second)
 			{
 				if (!alarm->IsInhibition() && !alarm->GetIsSend())
 				{

@@ -57,7 +57,7 @@ RTU * RTDB::GetRTU(int id)
 	return this->listOfRemotes[id];
 }
 
-map<int, list<Alarm*>> RTDB::GetAlarmMap()
+map<int, list<Alarm*>*> RTDB::GetAlarmMap()
 {
 	return alarmList;
 }
@@ -69,11 +69,11 @@ void RTDB::AddAlarm(Alarm *newAlarm)
 	{
 		for each(std::pair<int, RTU*> rtu in this->listOfRemotes)
 		{
-			this->alarmList.insert(std::pair<int, list<Alarm*>>(rtu.first, list<Alarm*>()));
+			this->alarmList.insert(std::pair<int, list<Alarm*>*>(rtu.first, new list<Alarm*>()));
 		}
 	}
 	bool flag = false;
-	for each(Alarm* a in alarmList.find(newAlarm->GetRTU()->GetID())->second)
+	for each(Alarm* a in *alarmList.find(newAlarm->GetRTU()->GetID())->second)
 	{
 		if (a->GetDigitalDevice()->GetId() == newAlarm->GetDigitalDevice()->GetId())
 		{
@@ -84,16 +84,16 @@ void RTDB::AddAlarm(Alarm *newAlarm)
 	if (!flag)
 	{
 		newAlarm->SetId(++this->alarmCount);
-		alarmList.find(newAlarm->GetRTU()->GetID())->second.push_back(newAlarm);
+		alarmList.find(newAlarm->GetRTU()->GetID())->second->push_back(newAlarm);
 	}
 	alarmMutex.unlock();
 }
 
 void RTDB::ProcessAlarm(int alarmId, char c)
 {
-	for each(std::pair<int, list<Alarm*>> rtu in alarmList)
+	for each(std::pair<int, list<Alarm*>*> rtu in alarmList)
 	{
-		for each(Alarm* a in rtu.second)
+		for each(Alarm* a in *rtu.second)
 		{
 			if (a->GetAlarmId() == alarmId)
 			{
@@ -114,9 +114,9 @@ void RTDB::RemoveAlarm(DigitalDevice * device)
 {
 	alarmMutex.lock();
 	Alarm* del = NULL;
-	for each(std::pair<int, list<Alarm*>> rtu in alarmList)
+	for each(std::pair<int, list<Alarm*>*> rtu in alarmList)
 	{
-		for each(Alarm* a in rtu.second)
+		for each(Alarm* a in *rtu.second)
 		{
 			if (a->GetDigitalDevice()->GetId() == device->GetId())
 			{
@@ -126,7 +126,11 @@ void RTDB::RemoveAlarm(DigitalDevice * device)
 		}
 		if (del != NULL)
 		{
-			if(del->IsAccepted() || del->IsInhibition()) rtu.second.remove(del);
+			if (del->IsAccepted() || del->IsInhibition())
+			{
+				rtu.second->remove(del);
+				delete del;
+			}
 			break;
 		}
 	}

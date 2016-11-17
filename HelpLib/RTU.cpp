@@ -46,9 +46,37 @@ unsigned short RTU::GetIncrementValue(unsigned short address)
 {
 	for each(std::pair<unsigned short, AnalogOutput*> ao in this->analogOutputList)
 	{
-		if (ao.second->GetAddress() == address) return ao.second->ToRaw(ao.second->GetEgu() + 100.00);
+		if (ao.second->GetAddress() == address)
+		{
+			double incValue = 100.00;
+			if (this->GetDigitalDevices().find(6)->second->GetPointState() == PointState::On && this->GetDigitalDevices().find(6)->second->GetCommand() == PointState::On)
+			{
+				incValue = 50.00;
+			}
+			return ao.second->ToRaw(ao.second->GetEgu() + incValue);
+		}
 	}
-	return 0.0;
+	return 0;
+}
+
+short RTU::GetDecrementValue(unsigned short address)
+{
+	for each(std::pair<unsigned short, AnalogOutput*> ao in this->analogOutputList)
+	{
+		if (ao.second->GetAddress() == address)
+		{
+			if (ao.second->GetEgu() == 0.00) return -1;
+			double incValue = 0.00;
+			if (this->GetDigitalDevices().find(6)->second->GetPointState() == PointState::On && this->GetDigitalDevices().find(6)->second->GetCommand() == PointState::On)
+			{
+				incValue = -50.00;
+			}
+			double retVal = ao.second->GetEgu() + incValue;
+			if (retVal < 0) retVal = 0;
+			return ao.second->ToRaw(retVal);
+		}
+	}
+	return 0;
 }
 
 SocketStruct* RTU::GetSocket()

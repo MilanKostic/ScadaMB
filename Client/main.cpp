@@ -1,5 +1,6 @@
 #include <iostream>
 #include "Socket.h"
+#include "PointStates.h"
 
 using namespace std;
 
@@ -52,7 +53,7 @@ int main() {
 			case '2': { ServeCommandMenu(&serverSocket, sendBuffer); break; }
 		}
 		
-	} while (menuValue != 0);
+	} while (menuValue != '0');
 	free(sendBuffer);
 }
 
@@ -78,7 +79,15 @@ void  ServeCommandMenu(SocketStruct* serverSocket, char* sendBuffer) {
 			cout << "Vrednost: ";
 			cin >> value;
 			sendBuffer[1] = menuValue;
-			*(int*)&sendBuffer[2] = value;
+			if (value == 1)
+			{
+				*(int*)&sendBuffer[2] = PointState::On;
+			}
+			else
+			{
+				*(int*)&sendBuffer[2] = PointState::Off;
+			}
+			//*(int*)&sendBuffer[2] = value;
 			Socket::Instance()->Send(serverSocket, sendBuffer, 6);
 		}
 	} while (menuValue != '0');
