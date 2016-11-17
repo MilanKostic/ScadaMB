@@ -14,6 +14,7 @@ private:
 	mutex alarmMutex;
 	RTDB();
 public:
+	~RTDB();
 	static RTDB *Instance();
 	char *GetCurrentValues();
 	map<int, RTU*> GetRemotes();

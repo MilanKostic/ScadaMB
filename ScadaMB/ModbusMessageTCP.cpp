@@ -47,3 +47,8 @@ void ModbusMessageTCP::SetMessageLength(int msgLen)
 void ModbusMessageTCP::Crunch(int rtuId, ModbusMessageTCP* req)
 {
 }
+
+char ModbusMessageTCP::GetFunctionCode()
+{
+	return this->functionCode;
+}

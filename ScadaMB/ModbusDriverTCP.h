@@ -15,7 +15,7 @@ private:
 	mutex sendMutex;
 public:
 	static ModbusDriverTCP *Instance();
-	mutex* GetMutex();
+	//mutex* GetMutex();
 	ModbusMessageTCP* SendModbusMessage(SocketStruct* socket, ModbusMessageTCP* modbusMessage);
 	ModbusMessageTCP* Receive(SocketStruct* socket);
 };

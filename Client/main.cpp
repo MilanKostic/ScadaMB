@@ -1,6 +1,7 @@
 #include <iostream>
 #include "Socket.h"
 #include "PointStates.h"
+#include <list>
 
 using namespace std;
 
@@ -107,9 +108,10 @@ void  ServeCommandMenu(SocketStruct* serverSocket, char* sendBuffer) {
 }
 
 void ListenForAlarms(ThreadParams* params) {
-	char* accessBuffer = new char[1024];
+	char accessBuffer[1024];
 	while (true)
 	{
+		#pragma region Select
 		int iResultSelect = Socket::Instance()->Select(params->socket->socket, 0);
 		if (iResultSelect == SOCKET_ERROR)
 		{
@@ -121,7 +123,9 @@ void ListenForAlarms(ThreadParams* params) {
 			Sleep(20);
 			continue;
 		}
+		#pragma endregion
 
+		#pragma region Receive
 		params->socket->lock.lock();
 		int iResult = recv(params->socket->socket, accessBuffer, 1024, 0);
 		params->socket->lock.unlock();
@@ -134,16 +138,18 @@ void ListenForAlarms(ThreadParams* params) {
 			printf("Connection is closed\n");
 			break; // Zatvorena konekcija
 		}
+		#pragma endregion
 
 		HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-		int k = 7;
+		
 		int coutInc = 0;
+		
 		if (accessBuffer[0] == 'A')
 		{
 			coutInc = 5;
-			k = 12;
+			SetConsoleTextAttribute(hConsole, 12);
 		}
-		SetConsoleTextAttribute(hConsole, k);
+		
 		
 		if (accessBuffer[0] == 'D')
 		{
@@ -151,6 +157,7 @@ void ListenForAlarms(ThreadParams* params) {
 			params->alarmText = NULL;
 			continue;
 		}
+
 		cout << &accessBuffer[coutInc];
 
 		if (accessBuffer[0] == 'A')
@@ -171,6 +178,5 @@ void ListenForAlarms(ThreadParams* params) {
 			cout << "Potvrdi alarm(Unesite p):";		
 		}
 		SetConsoleTextAttribute(hConsole, 7);
-
 	}
 }

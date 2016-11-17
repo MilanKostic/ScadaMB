@@ -17,7 +17,7 @@ private:
 	CommandingEngine();
 public:
 	static CommandingEngine *Instance();
-	void CreateCommand(char *message);
+	void CreateCommand(char *message, SocketStruct* s);
 
 	void StartIncrement100UnitPS();
 };

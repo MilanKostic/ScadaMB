@@ -91,7 +91,7 @@ void ReadCoilsMessage::Crunch(int rtuId, ModbusMessageTCP* req)
 			else if (!coil1 && coil2) device.second->SetState(PointState::Off);
 			else if (!coil1 && !coil2) device.second->SetState(PointState::Progress);
 
-			if (device.second->GetId() == PointAddress::dozvolaPraznjenjaMjesalice && device.second->GetPointState() == PointState::On && device.second->GetCommand() == PointState::Off)
+			if (device.second->GetId() == PointAddress::dozvolaPraznjenjaMjesalice && device.second->GetPointState() == PointState::On && device.second->GetCommand() != PointState::On)
 			{
 				//Generisi alarm
 				RTU *rtu = RTDB::Instance()->GetRemotes().find(PointAddress::rtuId)->second;

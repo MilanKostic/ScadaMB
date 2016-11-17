@@ -1,9 +1,9 @@
 #pragma once
 enum PointState {
-	Off = 0x0001,
-	On = 0x1000,
-	Progress = 0x0000,
-	Error = 0x0101
+	Off = 0,
+	On,
+	Progress,
+	Error
 };
 
 

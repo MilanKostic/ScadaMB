@@ -40,4 +40,5 @@ public:
 	virtual void SetHeader(Header header);
 	void SetMessageLength(int msgLen);
 	virtual void Crunch(int rtuId, ModbusMessageTCP* request);
+	char GetFunctionCode();
 };

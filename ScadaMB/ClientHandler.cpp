@@ -1,5 +1,6 @@
 #include "ClientHandler.h"
 #include "RTDB.h"
+#include "PointStates.h"
 
 void ReceiveFunction(SocketStruct* socket) {
 	ClientHandler::Instance()->Receive(socket);
@@ -31,7 +32,17 @@ void AlarmListeningThread(list<SocketStruct*>* acceptedSocketList)
 				}
 			}
 		}
-
+		DigitalDevice* d = RTDB::Instance()->GetRemotes().find(PointAddress::rtuId)->second->GetDigitalDevices().find(PointAddress::dozvolaPraznjenjaMjesalice)->second;
+		if (d->GetCommand() == d->GetPointState())
+		{
+			d->SetCommand(PointState::Error);
+			for each(SocketStruct* socket in *acceptedSocketList)
+			{
+				char* msg = "KOMANDA - IZVRSENA\n\0";
+				Socket::Instance()->Send(socket, msg, strlen(msg) + 1);
+			}
+		}
+		std::this_thread::sleep_for(chrono::microseconds(100));
 	}
 }
 
@@ -207,6 +218,7 @@ void ClientHandler::Receive(SocketStruct* socket) {
 		{
 			char* retVal = RTDB::Instance()->GetCurrentValues();
 			Socket::Instance()->Send(socket, retVal, strlen(retVal)+1);
+			delete[] retVal;
 		}
 		else if (accessBuffer[0] == 'A')
 		{
@@ -214,7 +226,7 @@ void ClientHandler::Receive(SocketStruct* socket) {
 		}
 		else
 		{
-			CommandingEngine::Instance()->CreateCommand(accessBuffer);
+			CommandingEngine::Instance()->CreateCommand(accessBuffer, socket);			
 		}
 	}
 	acceptedSocketList.remove(socket);
@@ -233,7 +245,7 @@ list<SocketStruct*> ClientHandler::GetAcceptedSocketList()
 
 void ClientHandler::SendDeleteAlarm(Alarm * a)
 {
-	char* delAlarm = new char[5];
+	char delAlarm[5];
 	delAlarm[0] = 'D';
 	*(int*)&delAlarm[1] = a->GetAlarmId();
 	for each(SocketStruct* socket in acceptedSocketList)

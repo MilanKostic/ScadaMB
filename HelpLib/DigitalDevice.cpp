@@ -25,22 +25,22 @@ DigitalDevice::DigitalDevice(unsigned short id, string name, bool readOnly, unsi
 	this->outAddress = outAddress;
 	this->status = PointStatus::OnScan;
 	this->state = PointState::Off;
-	this->command = PointState::Off;
+	this->command = PointState::Progress;
 }
 
 void DigitalDevice::SetCommand(PointState value)
 {
-	command = value;
+	this->command = value;
 }
 
 void DigitalDevice::SetState(PointState value)
 {
-	state = value;
+	this->state = value;
 }
 
 void DigitalDevice::SetStatus(PointStatus value)
 {
-	status = value;
+	this->status = value;
 }
 
 string DigitalDevice::GetName()
@@ -70,12 +70,12 @@ unsigned short DigitalDevice::GetId()
 
 PointState DigitalDevice::GetPointState()
 {
-	return state;
+	return this->state;
 }
 
 PointStatus DigitalDevice::GetPointStatus()
 {
-	return status;
+	return this->status;
 }
 /*
 RTU* DigitalDevice::GetRTU()
@@ -85,5 +85,5 @@ RTU* DigitalDevice::GetRTU()
 
 PointState DigitalDevice::GetCommand()
 {
-	return command;
+	return this->command;
 }

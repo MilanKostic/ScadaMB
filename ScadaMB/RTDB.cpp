@@ -8,6 +8,35 @@ RTDB::RTDB()
 	this->alarmCount = 0;
 }
 
+RTDB::~RTDB()
+{
+	for each(std::pair<int, list<Alarm*>*> alarms in alarmList)
+	{
+		for each(Alarm* a in *alarms.second)
+		{
+			delete a;
+		}
+		delete alarms.second;
+	}
+
+	for each(std::pair<int, RTU*> remotes in listOfRemotes)
+	{
+		for each(std::pair<unsigned short, DigitalDevice*> digitalDevice in remotes.second->GetDigitalDevices())
+		{
+			delete digitalDevice.second;
+		}
+		for each(std::pair<unsigned short, AnalogInput*> analogInputs in remotes.second->GetAnalogInputList())
+		{
+			delete analogInputs.second;
+		}
+		for each(std::pair<unsigned short, AnalogOutput*> analogOutputs in remotes.second->GetAnalogOutoputList())
+		{
+			delete analogOutputs.second;
+		}
+		delete remotes.second;
+	}
+}
+
 RTDB * RTDB::Instance()
 {
 	if (instance == NULL) {

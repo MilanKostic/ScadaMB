@@ -1,6 +1,16 @@
 #include "DataProcessingEngine.h"
 
-DataProcessingEngine::DataProcessingEngine() {}
+DataProcessingEngine::~DataProcessingEngine()
+{
+	for each(std::pair<int, list<HostPoll*>*> rtu in remotes)
+	{
+		for each(HostPoll* hp in *rtu.second)
+		{
+			delete hp;
+		}
+		delete rtu.second;
+	}
+}
 
 void DataProcessingEngine::AddHostPoll(int rtuId, HostPoll* hostPoll)
 {
@@ -26,6 +36,8 @@ void DataProcessingEngine::Process()
 				HostPoll* first = rtu.second->front();
 				rtu.second->pop_front();
 				first->GetResponse()->Crunch(rtu.first, first->GetRequest());
+				delete first->GetRequest();
+				delete first->GetResponse();
 				delete first;
 			}
 			lock.unlock();
