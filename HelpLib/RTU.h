@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string>
 #include <list>
-#include "Socket.h"
+#include "SocketWrapper.h"
 
 //#include "AnalogInput.h"
 #include "AnalogOutput.h"

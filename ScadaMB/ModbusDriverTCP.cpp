@@ -42,7 +42,7 @@ ModbusMessageTCP* ModbusDriverTCP::SendModbusMessage(SocketStruct* soc, ModbusMe
 {
 	this->sendMutex.lock();
 	char* msg = modbusMessage->Serialize();
-	bool success = Socket::Instance()->Send(soc, msg, modbusMessage->GetMessageLength());
+	bool success = SocketWrapper::Instance()->Send(soc, msg, modbusMessage->GetMessageLength());
 	delete[] msg;
 	ModbusMessageTCP* ret = NULL;
 
@@ -63,7 +63,7 @@ ModbusMessageTCP* ModbusDriverTCP::Receive(SocketStruct* socket)
 	socket->lock.lock();
 	while (true) {
 
-		int iResultSelect = Socket::Instance()->Select(socket->socket, 0);
+		int iResultSelect = SocketWrapper::Instance()->Select(socket->socket, 0);
 		if (iResultSelect == SOCKET_ERROR)
 		{
 			continue;

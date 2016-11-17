@@ -11,16 +11,16 @@ typedef struct
 	mutex lock;
 }SocketStruct;
 
-class Socket
+class SocketWrapper
 {
 private:
 	const int sendSleepInterval = 20;
-	static Socket* instance;
-	Socket();
-	~Socket();
+	static SocketWrapper* instance;
+	SocketWrapper();
+	~SocketWrapper();
 public:
 	bool InitializeWindowsSockets();
-	static Socket* Instance();
+	static SocketWrapper* Instance();
 	int Select(SOCKET socket, int send);
 	SOCKET Connect(char* ipAddress, int port);
 	bool Send(SocketStruct* socket, char* data, int length);

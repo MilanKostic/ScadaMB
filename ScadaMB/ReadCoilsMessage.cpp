@@ -1,6 +1,6 @@
 #include "ReadCoilsMessage.h"
 #include <string>
-#include "Socket.h"
+#include "SocketWrapper.h"
 
 ReadCoilsMessage::ReadCoilsMessage(unsigned short startingAddress, unsigned short numberOfCoils)
 {
@@ -98,7 +98,7 @@ void ReadCoilsMessage::Crunch(int rtuId, ModbusMessageTCP* req)
 				DigitalDevice *dev = rtu->GetDigitalDevices().find(PointAddress::dozvolaPraznjenjaMjesalice)->second;
 				RTDB::Instance()->AddAlarm(new Alarm(rtu, dev, -1));
 			}
-			else if(device.second->GetPointState() == device.second->GetCommand() && device.second->GetId() == PointAddress::dozvolaPraznjenjaMjesalice)
+			else if((device.second->GetPointState() == PointState::Off || device.second->GetPointState() == device.second->GetCommand()) && device.second->GetId() == PointAddress::dozvolaPraznjenjaMjesalice)
 			{
 				RTDB::Instance()->RemoveAlarm(device.second);
 			}

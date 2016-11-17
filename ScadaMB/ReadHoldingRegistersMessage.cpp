@@ -1,6 +1,6 @@
 #include "ReadHoldingRegistersMessage.h"
 #include <string>
-#include "Socket.h"
+#include "SocketWrapper.h"
 #include "RTDB.h"
 
 ReadHoldingRegistersMessage::ReadHoldingRegistersMessage(unsigned short startingAddress, unsigned short quantityOfRegisters)

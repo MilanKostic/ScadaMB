@@ -17,6 +17,7 @@ private:
 	PointStatus status;
 	//RTU* rtu;
 
+	bool commandingProgress;
 	PointState command;
 
 public:
@@ -36,4 +37,6 @@ public:
 	PointStatus GetPointStatus();
 //	RTU *GetRTU();
 	PointState GetCommand();
+	bool GetCommandingProgress();
+	void SetCommandingProgress(bool value);
 };

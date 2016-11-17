@@ -1,18 +1,18 @@
-#include "Socket.h"
+#include "SocketWrapper.h"
 
-Socket* Socket::instance = NULL;
+SocketWrapper* SocketWrapper::instance = NULL;
 
-Socket::Socket()
+SocketWrapper::SocketWrapper()
 {
 	InitializeWindowsSockets();
 }
 
-Socket::~Socket() 
+SocketWrapper::~SocketWrapper() 
 { 
 	delete instance;
 }
 
-bool Socket::InitializeWindowsSockets()
+bool SocketWrapper::InitializeWindowsSockets()
 {
 	WSADATA wsaData;
 	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
@@ -23,16 +23,16 @@ bool Socket::InitializeWindowsSockets()
 	return true;
 }
 
-Socket* Socket::Instance()
+SocketWrapper* SocketWrapper::Instance()
 {
 	if (instance == NULL)
 	{
-		instance = new Socket();
+		instance = new SocketWrapper();
 	}
 	return instance;
 }
 
-int Socket::Select(SOCKET socket, int send)
+int SocketWrapper::Select(SOCKET socket, int send)
 {
 	FD_SET set;
 	timeval timeVal;
@@ -53,7 +53,7 @@ int Socket::Select(SOCKET socket, int send)
 	}
 }
 
-SOCKET Socket::Connect(char* ipAddress, int port)
+SOCKET SocketWrapper::Connect(char* ipAddress, int port)
 {
 	SOCKET connectSocket = INVALID_SOCKET;
 	int iResult = 0;
@@ -100,7 +100,7 @@ SOCKET Socket::Connect(char* ipAddress, int port)
 	return connectSocket;
 }
 
-bool Socket::Send(SocketStruct* socket, char* data, int length)
+bool SocketWrapper::Send(SocketStruct* socket, char* data, int length)
 {
 	socket->lock.lock();
 	while (true)

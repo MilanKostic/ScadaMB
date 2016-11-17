@@ -10,7 +10,7 @@ RTU::RTU(int id, string industrialProtocol, string transportProtocol, string ipA
 	char* ip = new char[this->ipAddress.size() + 1];
 	memcpy(ip, this->ipAddress.c_str(), this->ipAddress.size());
 	ip[this->ipAddress.size()] = '\0';
-	socket.socket = Socket::Instance()->Connect(ip, this->port);
+	socket.socket = SocketWrapper::Instance()->Connect(ip, this->port);
 }
 
 map<unsigned short, AnalogInput*> RTU::GetAnalogInputList() {
@@ -49,7 +49,7 @@ unsigned short RTU::GetIncrementValue(unsigned short address)
 		if (ao.second->GetAddress() == address)
 		{
 			double incValue = 100.00;
-			if (this->GetDigitalDevices().find(6)->second->GetPointState() == PointState::On && this->GetDigitalDevices().find(6)->second->GetCommand() == PointState::On)
+			if (this->GetDigitalDevices().find(6)->second->GetPointState() == PointState::On /*&& this->GetDigitalDevices().find(6)->second->GetCommand() == PointState::On*/)
 			{
 				incValue = 50.00;
 			}
@@ -67,7 +67,7 @@ short RTU::GetDecrementValue(unsigned short address)
 		{
 			if (ao.second->GetEgu() == 0.00) return -1;
 			double incValue = 0.00;
-			if (this->GetDigitalDevices().find(6)->second->GetPointState() == PointState::On && this->GetDigitalDevices().find(6)->second->GetCommand() == PointState::On)
+			if (this->GetDigitalDevices().find(6)->second->GetPointState() == PointState::On /*&& this->GetDigitalDevices().find(6)->second->GetCommand() == PointState::On*/)
 			{
 				incValue = -50.00;
 			}

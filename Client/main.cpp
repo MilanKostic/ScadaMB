@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Socket.h"
+#include "SocketWrapper.h"
 #include "PointStates.h"
 #include <list>
 
@@ -21,7 +21,7 @@ void ListenForAlarms(ThreadParams* serverSocket);
 int main() {
 
 	SocketStruct serverSocket;
-	serverSocket.socket = Socket::Instance()->Connect("127.0.0.1", 9000);
+	serverSocket.socket = SocketWrapper::Instance()->Connect("127.0.0.1", 9000);
 
 	ThreadParams param;
 	param.socket = &serverSocket;
@@ -53,7 +53,7 @@ int main() {
 		if (param.inputAlarm)
 		{
 			param.alarmBuffer[5] = menuValue;
-			Socket::Instance()->Send(param.socket, param.alarmBuffer, 6);
+			SocketWrapper::Instance()->Send(param.socket, param.alarmBuffer, 6);
 			param.inputAlarm = false;
 			system("cls");
 			continue;
@@ -74,25 +74,26 @@ int main() {
 void ShowMonitoringValues(SocketStruct* serverSocket, char* sendBuffer) {
 	sendBuffer[0] = 'r';
 	
-	Socket::Instance()->Send(serverSocket, sendBuffer, 6);
+	SocketWrapper::Instance()->Send(serverSocket, sendBuffer, 6);
 		
 }
 
 void  ServeCommandMenu(SocketStruct* serverSocket, char* sendBuffer) {
 	sendBuffer[0] = 'c';
-	char menuValue;
+	//char menuValue;
 	int value;
-	do {
+	//do {
 		cout << "1. Dozvola praznjenja mjesalice (1/0)\n";
-		cout << "0. Izlaz\n";
-		cin >> menuValue;
+		//cout << "0. Izlaz\n";
+		//cout << ">>";
+		//cin >> menuValue;
 		
-		system("cls");
+		//system("cls");
 
-		if (menuValue != '0') {
+		//if (menuValue != '0') {
 			cout << "Vrednost: ";
 			cin >> value;
-			sendBuffer[1] = menuValue;
+			sendBuffer[1] = '1';
 			if (value == 1)
 			{
 				*(int*)&sendBuffer[2] = PointState::On;
@@ -102,9 +103,9 @@ void  ServeCommandMenu(SocketStruct* serverSocket, char* sendBuffer) {
 				*(int*)&sendBuffer[2] = PointState::Off;
 			}
 			//*(int*)&sendBuffer[2] = value;
-			Socket::Instance()->Send(serverSocket, sendBuffer, 6);
-		}
-	} while (menuValue != '0');
+			SocketWrapper::Instance()->Send(serverSocket, sendBuffer, 6);
+		//}
+	//} while (menuValue != '0');
 }
 
 void ListenForAlarms(ThreadParams* params) {
@@ -112,7 +113,7 @@ void ListenForAlarms(ThreadParams* params) {
 	while (true)
 	{
 		#pragma region Select
-		int iResultSelect = Socket::Instance()->Select(params->socket->socket, 0);
+		int iResultSelect = SocketWrapper::Instance()->Select(params->socket->socket, 0);
 		if (iResultSelect == SOCKET_ERROR)
 		{
 			fprintf(stderr, "select failed with error: %ld\n", WSAGetLastError());

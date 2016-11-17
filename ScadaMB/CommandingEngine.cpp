@@ -30,6 +30,7 @@ void CommandingEngine::CreateCommand(char * message, SocketStruct* socket)
 				if (device.second->GetOutAddress() == PointAddress::dozvolaPraznjenjaMjesalice)
 				{
 					device.second->SetCommand((PointState)*(int*)(message + 2)); 
+					device.second->SetCommandingProgress(true);
 					break;
 				}
 			}
@@ -40,11 +41,11 @@ void CommandingEngine::CreateCommand(char * message, SocketStruct* socket)
 			char* error = "GRESKA U SLANJU KOMANDE\n\0";
 			if (req->GetFunctionCode() == resp->GetFunctionCode())
 			{
-				Socket::Instance()->Send(socket, success, strlen(success) + 1);
+				SocketWrapper::Instance()->Send(socket, success, strlen(success) + 1);
 			}
 			else
 			{
-				Socket::Instance()->Send(socket, error, strlen(error) + 1);
+				SocketWrapper::Instance()->Send(socket, error, strlen(error) + 1);
 			}
 			delete req;
 			delete resp;
@@ -65,37 +66,32 @@ void CommandingEngine::StartIncrement100UnitPS()
 //Uvecavanje/smanjivanje sirovine na odredjenom analognom izlazu sa adresom outAnalogAddress
 void IncHelp(RTU* rtu, unsigned short outAnalogAddress, unsigned short digitalDeviceId)
 {
+	ModbusMessageTCP* req = NULL;
+	ModbusMessageTCP* resp = NULL;
 	if (rtu->GetDigitalDevices().find(digitalDeviceId)->second->GetPointState() == PointState::On) 
 	{
-		ModbusDriverTCP::Instance()->SendModbusMessage(rtu->GetSocket(),
-			new WriteSingleRegisterMessage(outAnalogAddress, rtu->GetIncrementValue(outAnalogAddress)));
+		req = new WriteSingleRegisterMessage(outAnalogAddress, rtu->GetIncrementValue(outAnalogAddress));
+		resp = ModbusDriverTCP::Instance()->SendModbusMessage(rtu->GetSocket(), req);
 	}
 	else
 	{
 		short decrementValue = rtu->GetDecrementValue(outAnalogAddress);
 		if (decrementValue >= 0)
 		{
-			ModbusDriverTCP::Instance()->SendModbusMessage(rtu->GetSocket(),
-				new WriteSingleRegisterMessage(outAnalogAddress, decrementValue));
+			req = new WriteSingleRegisterMessage(outAnalogAddress, decrementValue);
+			resp = ModbusDriverTCP::Instance()->SendModbusMessage(rtu->GetSocket(), req);
 		}
 	}
+	delete req;
+	delete resp;
 }
 
 void IncrementForOneRTU(RTU *rtu) {
+	
+	ModbusMessageTCP* req = NULL;
+	ModbusMessageTCP* resp = NULL;
+
 	while (true) {
-		/*if (rtu->GetDigitalDevices().find(PointAddress::ventilVode)->second->GetPointState() == PointState::On) {
-			ModbusDriverTCP::Instance()->SendModbusMessage(rtu->GetSocket()/*Soket od RTU-a,
-				new WriteSingleRegisterMessage(PointAddress::kolicinaVodeOut, rtu->GetIncrementValue(PointAddress::kolicinaVodeOut)));
-		}
-		if (rtu->GetDigitalDevices().find(PointAddress::ventilPeska)->second->GetPointState() == PointState::On) {
-			WriteSingleRegisterMessage* response = (WriteSingleRegisterMessage*)ModbusDriverTCP::Instance()->SendModbusMessage(rtu->GetSocket()/*Soket od RTU-a,
-				new WriteSingleRegisterMessage(PointAddress::kolicinaPijeskaOut, rtu->GetIncrementValue(PointAddress::kolicinaPijeskaOut)));
-		}
-		if (rtu->GetDigitalDevices().find(PointAddress::ventilSljunka)->second->GetPointState() == PointState::On) {
-			ModbusDriverTCP::Instance()->SendModbusMessage(rtu->GetSocket()/*Soket od RTU-a,
-				new WriteSingleRegisterMessage(PointAddress::kolicinaSljunkaOut, rtu->GetIncrementValue(PointAddress::kolicinaSljunkaOut)));
-		}
-		*/
 		IncHelp(rtu, PointAddress::kolicinaVodeOut, PointAddress::ventilVode);
 		IncHelp(rtu, PointAddress::kolicinaPijeskaOut, PointAddress::ventilPeska);
 		IncHelp(rtu, PointAddress::kolicinaSljunkaOut, PointAddress::ventilSljunka);
@@ -104,16 +100,17 @@ void IncrementForOneRTU(RTU *rtu) {
 		{
 			// Postaviti mjesalicu da je prazna
 			rtu->GetDigitalDevices().find(PointAddress::stanjeMjesaliceId)->second->SetCommand(PointState::Off);
-			ModbusDriverTCP::Instance()->SendModbusMessage(rtu->GetSocket(),
-				new WriteSingleCoilMessage(PointAddress::stanjeMjesalice, PointState::Off));
+			req = new WriteSingleCoilMessage(PointAddress::stanjeMjesalice, PointState::Off);
+			resp = ModbusDriverTCP::Instance()->SendModbusMessage(rtu->GetSocket(), req);
 		}
 		else if (rtu->GetDigitalDevices().find(PointAddress::stanjeMjesaliceId)->second->GetPointState() != PointState::On)
 		{
 			rtu->GetDigitalDevices().find(PointAddress::stanjeMjesaliceId)->second->SetCommand(PointState::On);
-			ModbusDriverTCP::Instance()->SendModbusMessage(rtu->GetSocket(),
-				new WriteSingleCoilMessage(rtu->GetDigitalDevices().find(PointAddress::stanjeMjesaliceId)->second->GetOutAddress(), PointState::On));
+			req = new WriteSingleCoilMessage(rtu->GetDigitalDevices().find(PointAddress::stanjeMjesaliceId)->second->GetOutAddress(), PointState::On);
+			resp = ModbusDriverTCP::Instance()->SendModbusMessage(rtu->GetSocket(), req);
 		}
-
-		this_thread::sleep_for(chrono::milliseconds(1000));
+		delete req;
+		delete resp;
+		this_thread::sleep_for(chrono::milliseconds(2000));
 	}
 }

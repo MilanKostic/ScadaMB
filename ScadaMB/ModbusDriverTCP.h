@@ -2,7 +2,7 @@
 #include "ModbusMessageTCP.h"
 #include <winsock2.h>
 #include <ws2tcpip.h>
-#include "Socket.h"
+#include "SocketWrapper.h"
 
 class ModbusDriverTCP
 {

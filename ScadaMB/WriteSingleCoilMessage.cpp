@@ -1,5 +1,5 @@
 #include "WriteSingleCoilMessage.h"
-#include "Socket.h"
+#include "SocketWrapper.h"
 
 WriteSingleCoilMessage::WriteSingleCoilMessage()
 {

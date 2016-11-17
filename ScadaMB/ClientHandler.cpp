@@ -24,7 +24,7 @@ void AlarmListeningThread(list<SocketStruct*>* acceptedSocketList)
 						*(int*)&writable[1] = alarm->GetAlarmId();
 						memcpy(&writable[5], alarm->GetAlarmMessage().c_str(), alarm->GetAlarmMessage().length());
 						writable[msgLen - 1] = '\0';
-						Socket::Instance()->Send(soc, writable, msgLen);
+						SocketWrapper::Instance()->Send(soc, writable, msgLen);
 						delete[] writable;
 						alarm->SetIsSend(true);
 						//alarm->setSleepTime(5000);
@@ -33,13 +33,14 @@ void AlarmListeningThread(list<SocketStruct*>* acceptedSocketList)
 			}
 		}
 		DigitalDevice* d = RTDB::Instance()->GetRemotes().find(PointAddress::rtuId)->second->GetDigitalDevices().find(PointAddress::dozvolaPraznjenjaMjesalice)->second;
-		if (d->GetCommand() == d->GetPointState())
+		if (d->GetCommand() == d->GetPointState() && d->GetCommandingProgress())
 		{
-			d->SetCommand(PointState::Error);
+			//d->SetCommand(PointState::Off);
+			d->SetCommandingProgress(false);
 			for each(SocketStruct* socket in *acceptedSocketList)
 			{
 				char* msg = "KOMANDA - IZVRSENA\n\0";
-				Socket::Instance()->Send(socket, msg, strlen(msg) + 1);
+				SocketWrapper::Instance()->Send(socket, msg, strlen(msg) + 1);
 			}
 		}
 		std::this_thread::sleep_for(chrono::microseconds(100));
@@ -67,7 +68,7 @@ void ClientHandler::ServerThread(char * port)
 	SOCKET listenSocket = INVALID_SOCKET;
 	int iResult;
 
-	if (!Socket::Instance()->InitializeWindowsSockets())
+	if (!SocketWrapper::Instance()->InitializeWindowsSockets())
 	{
 		return;
 	}
@@ -139,7 +140,7 @@ void ClientHandler::ServerThread(char * port)
 
 	while (true) {
 
-		int iResult = Socket::Instance()->Select(listenSocket, 0);
+		int iResult = SocketWrapper::Instance()->Select(listenSocket, 0);
 		if (iResult == SOCKET_ERROR)
 		{
 			fprintf(stderr, "select failed with error: %ld\n", WSAGetLastError());
@@ -188,7 +189,7 @@ void ClientHandler::Receive(SocketStruct* socket) {
 
 	while (true)
 	{
-		int iResultSelect = Socket::Instance()->Select(socket->socket, 0);
+		int iResultSelect = SocketWrapper::Instance()->Select(socket->socket, 0);
 		if (iResultSelect == SOCKET_ERROR)
 		{
 			fprintf(stderr, "select failed with error: %ld\n", WSAGetLastError());
@@ -217,7 +218,7 @@ void ClientHandler::Receive(SocketStruct* socket) {
 		if (accessBuffer[0] == 'r')
 		{
 			char* retVal = RTDB::Instance()->GetCurrentValues();
-			Socket::Instance()->Send(socket, retVal, strlen(retVal)+1);
+			SocketWrapper::Instance()->Send(socket, retVal, strlen(retVal)+1);
 			delete[] retVal;
 		}
 		else if (accessBuffer[0] == 'A')
@@ -250,7 +251,7 @@ void ClientHandler::SendDeleteAlarm(Alarm * a)
 	*(int*)&delAlarm[1] = a->GetAlarmId();
 	for each(SocketStruct* socket in acceptedSocketList)
 	{
-		Socket::Instance()->Send(socket, delAlarm, 5);
+		SocketWrapper::Instance()->Send(socket, delAlarm, 5);
 	}
 }
 

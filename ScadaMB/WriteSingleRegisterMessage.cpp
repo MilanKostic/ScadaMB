@@ -1,5 +1,5 @@
 #include "WriteSingleRegisterMessage.h"
-#include "Socket.h"
+#include "SocketWrapper.h"
 
 WriteSingleRegisterMessage::WriteSingleRegisterMessage()
 {

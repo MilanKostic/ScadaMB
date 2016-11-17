@@ -1,5 +1,5 @@
 #include "ModbusMessageTCP.h"
-#include "Socket.h"
+#include "SocketWrapper.h"
 
 ModbusMessageTCP::ModbusMessageTCP() {}
 

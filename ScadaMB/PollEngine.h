@@ -8,7 +8,7 @@
 class PollEngine
 {
 private:
-	const unsigned short sendInterval = 2000;
+	const unsigned short sendInterval = 1000;
 	DataProcessingEngine dataProcessingEngine;
 public:
 	PollEngine();

@@ -48,22 +48,27 @@ RTDB * RTDB::Instance()
 char* RTDB::GetCurrentValues()
 {
 	string answer;
-	answer += "Current values: \n\n";
+	answer += "\nTrenutne vrijednosti: \n\n";
 	for each (pair<int, RTU*> rtu in listOfRemotes)
 	{
-		answer += "RTU " + to_string(rtu.second->GetID());
+		answer += "\n**************************************************************";
+		answer += "\nRTU " + to_string(rtu.second->GetID()) + "\n";
+		answer += "**************************************************************";
+		answer += "\nAnalogne vrijednosti:\n";
 		for each (pair<unsigned int,AnalogOutput*> analogOut in rtu.second->GetAnalogOutoputList())
 		{
 			answer += "\t" + analogOut.second->GetName() + " " + to_string(analogOut.second->GetEgu()) + "\n";
 		}
 		for each (pair<unsigned int, AnalogInput*> analogIn in rtu.second->GetAnalogInputList())
 		{
-			answer += "\t" + analogIn.second->GetName() + " " + to_string(analogIn.second->GetEgu()) + "\n";
+			answer += "\t" + analogIn.second->GetName() + " " + to_string(analogIn.second->GetEgu()) + "\n\n";
 		}
+		answer += "\nDigitalne vrijednosti:\n";
 		for each (pair<unsigned int, DigitalDevice*> dev in rtu.second->GetDigitalDevices())
 		{
 			answer += "\t" + dev.second->GetName() + " " + to_string(dev.second->GetPointState() == PointState::On) + "\n";
 		}
+		answer += "**************************************************************\n\n";
 	}
 	char * writable = new char[answer.size() + 1];
 	copy(answer.begin(), answer.end(), writable);
